@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700..800&family=Manrope:wght@400..600&family=JetBrains+Mono:wght@400..700&display=swap');
+@import "tailwindcss";
+@plugin "tailwindcss-animate";
+
+@theme {
+  --color-portfolio-bg: #FAF5F0;
+  --color-portfolio-surface: #FFFFFF;
+  --color-portfolio-text: #232323;
+  --color-portfolio-text-secondary: #5E5E5E;
+  --color-portfolio-primary: #E15773;
+  --color-portfolio-primary-hover: #C84461;
+  --color-portfolio-primary-dark: #7E2738;
+  --color-portfolio-green: #8C9C8A;
+  --color-portfolio-gold: #D6B76B;
+  --color-portfolio-error: #D9534F;
+  --color-portfolio-success: #5F9F63;
+  --color-portfolio-warning: #D9A441;
+  --color-portfolio-border: rgba(0, 0, 0, 0.08);
+
+  --font-heading: 'Bricolage Grotesque', sans-serif;
+  --font-body: 'Manrope', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --radius-12: 12px;
+  --radius-16: 16px;
+
+  --shadow-solid: 8px 8px 0 rgba(35, 35, 35, 0.15);
+  --shadow-solid-sm: 4px 4px 0 rgba(35, 35, 35, 0.15);
+  --shadow-solid-lg: 12px 12px 0 rgba(35, 35, 35, 0.15);
+}
+
+:root {
+  background-color: var(--color-portfolio-bg);
+  color: var(--color-portfolio-text);
+  font-family: var(--font-body);
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background-color: var(--color-portfolio-primary);
+  color: var(--color-portfolio-surface);
+}
+
+.paper-texture {
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.006) 2px,
+    rgba(0, 0, 0, 0.006) 4px
+  );
+  background-size: 100% 4px;
+}
