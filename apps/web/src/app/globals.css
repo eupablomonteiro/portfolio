@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Manrope:wght@200..800&family=Caveat:wght@400..700&display=swap');
+@import "tailwindcss";
+@plugin "tailwindcss-animate";
+
+@theme {
+  --color-portfolio-bg: #F7F3EC;
+  --color-portfolio-bg-alt: #EFE7DA;
+  --color-portfolio-card: #FCFAF7;
+  --color-portfolio-text: #242424;
+  --color-portfolio-text-muted: #66635F;
+  --color-portfolio-border: #D8D2C7;
+  --color-portfolio-primary: #B85C4B;
+  --color-portfolio-primary-hover: #9D473A;
+  --color-portfolio-secondary: #7E3832;
+  --color-portfolio-accent: #D98C3F;
+  --color-portfolio-green: #99A68D;
+  --color-portfolio-blue: #72859A;
+  --color-portfolio-yellow: #D6B96E;
+
+  --font-heading: 'Bricolage Grotesque', sans-serif;
+  --font-body: 'Manrope', sans-serif;
+  --font-handwritten: 'Caveat', cursive;
+
+  --spacing-grid: 8px;
+
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+}
+
+:root {
+  background-color: var(--color-portfolio-bg);
+  color: var(--color-portfolio-text);
+  font-family: var(--font-body);
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background-color: var(--color-portfolio-primary);
+  color: var(--color-portfolio-card);
+}
+
+.paper-texture {
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.008) 2px,
+    rgba(0, 0, 0, 0.008) 4px
+  );
+  background-size: 100% 4px;
+}

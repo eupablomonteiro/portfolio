@@ -1,0 +1,4 @@
+
+> @portfolio/web@0.0.0 typecheck C:\workfolder\pessoais\portfolio\apps\web
+> tsc --noEmit
+
