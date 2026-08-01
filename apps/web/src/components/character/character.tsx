@@ -26,7 +26,7 @@ function HeroCharacter({ className }: { className?: string }) {
   return (
     <div className={cn("relative", className)}>
       <div
-        className="absolute -inset-10 hidden rotate-50 rounded-16 bg-portfolio-gold/40 sm:block"
+        className="pointer-events-none absolute -inset-6 rotate-50 rounded-16 bg-portfolio-gold/40 sm:-inset-10"
         aria-hidden="true"
       />
       <div className="relative overflow-hidden rounded-16">
@@ -36,8 +36,8 @@ function HeroCharacter({ className }: { className?: string }) {
           width={1756}
           height={3872}
           priority
-          quality={90}
-          sizes="(min-width: 1024px) 380px, (min-width: 640px) 320px, 260px"
+          quality={100}
+          sizes="(min-width: 1024px) 380px, (min-width: 640px) 320px, 220px"
           className="h-auto w-full"
         />
       </div>

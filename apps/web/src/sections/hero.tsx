@@ -62,12 +62,12 @@ export function Hero() {
       <GraphicLine className="absolute bottom-32 left-[6%] w-28 text-portfolio-green" />
       <GraphicStar className="absolute bottom-24 right-[6%] h-6 w-6 text-portfolio-primary/60" />
 
-      <div className="mx-auto grid w-full max-w-[1200px] grid-cols-12 gap-10 px-6">
+      <div className="mx-auto flex w-full max-w-[1200px] flex-wrap items-center justify-center gap-x-16 gap-y-14 px-6">
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="col-span-12 flex flex-col items-start gap-7 lg:col-span-7"
+          className="flex w-full min-w-[280px] max-w-[640px] flex-1 flex-col items-start gap-7"
         >
           <motion.p
             variants={itemVariants}
@@ -139,9 +139,12 @@ export function Hero() {
           initial={{ opacity: 0, x: 60 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.4, ease: "easeOut", delay: 0.35 }}
-          className="col-span-12 flex justify-center lg:col-span-5"
+          className="shrink-0"
         >
-          <motion.div style={{ y: characterY }} className="mx-auto w-[60vw] max-w-[220px] sm:max-w-[320px] lg:max-w-[380px]">
+          <motion.div
+            style={{ y: characterY }}
+            className="mx-auto w-[60vw] max-w-[220px] sm:max-w-[320px] lg:max-w-[380px]"
+          >
             <Character pose="hero" />
           </motion.div>
         </motion.div>

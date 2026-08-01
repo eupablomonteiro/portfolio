@@ -59,9 +59,11 @@ const projects: Project[] = [
 const SPEED = 1.1;
 const DRAG_THRESHOLD = 6;
 
-function wrapX(value: number, setWidth: number) {
+function clampX(value: number, setWidth: number) {
   if (setWidth <= 0) return value;
-  return ((value % setWidth) + setWidth) % setWidth;
+  if (value > 0) return value - setWidth;
+  if (value <= -setWidth) return value + setWidth;
+  return value;
 }
 
 export function Projects() {
@@ -85,7 +87,7 @@ export function Projects() {
     movedRef.current = true;
     lastPointerXRef.current = e.clientX;
     const setWidth = firstSetRef.current?.offsetWidth ?? 0;
-    xRef.current = wrapX(xRef.current + dx, setWidth);
+    xRef.current = clampX(xRef.current + dx, setWidth);
   }, []);
 
   const suppressClick = useCallback((e: MouseEvent) => {
@@ -132,7 +134,7 @@ export function Projects() {
         !hoverRef.current &&
         !reducedMotionRef.current
       ) {
-        xRef.current = wrapX(xRef.current + (SPEED * dt) / 16.67, setWidth);
+        xRef.current = clampX(xRef.current + (SPEED * dt) / 16.67, setWidth);
       }
 
       if (trackRef.current) {
@@ -151,6 +153,8 @@ export function Projects() {
           const progress = Math.min(1, Math.max(0, visible / rect.width));
           card.style.opacity = String(0.25 + 0.75 * progress);
           card.style.transform = `scale(${0.94 + 0.06 * progress})`;
+          const blur = (1 - progress) * 3;
+          card.style.filter = blur > 0.05 ? `blur(${blur.toFixed(2)}px)` : "";
         }
       }
 
@@ -203,6 +207,7 @@ export function Projects() {
               alt="Pablo Monteiro apresentando seus projetos"
               width={2020}
               height={3932}
+              quality={100}
               sizes="(min-width: 1024px) 250px, 220px"
               className="h-auto w-full"
             />
@@ -214,7 +219,7 @@ export function Projects() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.5, ease: "easeOut", delay: 0.15 }}
-            className="relative flex w-full flex-1 select-none items-end overflow-hidden touch-pan-y cursor-grab active:cursor-grabbing"
+            className="carousel-mask relative flex w-full flex-1 select-none items-end overflow-hidden touch-pan-y cursor-grab active:cursor-grabbing"
             onPointerDown={startDrag}
             onPointerCancel={endDrag}
             onPointerEnter={() => {
@@ -225,7 +230,7 @@ export function Projects() {
             }}
           >
             <div ref={trackRef} className="flex w-max py-4 will-change-transform">
-              {[0, 1].map((set) => (
+              {[0, 1, 2].map((set) => (
                 <div
                   key={set}
                   ref={set === 0 ? firstSetRef : undefined}
