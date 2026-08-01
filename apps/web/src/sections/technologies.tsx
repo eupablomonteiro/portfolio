@@ -123,7 +123,7 @@ export function Technologies() {
           height={1816}
           alt="Pablo Monteiro espiando por trás de um cartão de tecnologias"
           sizes="(min-width: 768px) 680px, 100vw"
-          className="relative z-0 mx-auto h-auto w-full max-w-[680px] rounded-16"
+          className="relative z-10 -mb-10 mx-auto h-auto w-full max-w-[680px] rounded-16 sm:-mb-14"
         />
 
         <motion.div
@@ -131,7 +131,7 @@ export function Technologies() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-50px" }}
-          className="relative z-10 -mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+          className="relative z-0 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
         >
           {technologies.map((tech, i) => (
             <TechCard key={tech.name} tech={tech} featured={i === 0} />
