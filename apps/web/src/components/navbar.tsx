@@ -40,7 +40,7 @@ export function Navbar() {
           href="#hero"
           className="font-mono text-sm font-semibold text-portfolio-text"
         >
-          pablo<span className="text-portfolio-primary">.dev</span>
+          eupablomonteiro<span className="text-portfolio-primary">.dev</span>
         </a>
 
         <div className="hidden md:flex items-center gap-8">

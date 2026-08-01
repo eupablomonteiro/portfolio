@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import pabloImage from "@/assets/pablo-base.jpg";
+import pabloHeroImage from "@/assets/pablo-hero-section.png";
 
 export type CharacterPose = "hero" | "peek" | "wave" | "confused" | "bye";
 
@@ -26,17 +26,19 @@ function HeroCharacter({ className }: { className?: string }) {
   return (
     <div className={cn("relative", className)}>
       <div
-        className="absolute -inset-3 rotate-2 rounded-16 bg-portfolio-gold/40"
+        className="absolute -inset-4 rotate-12 rounded-16 bg-portfolio-gold/40 sm:-inset-10 sm:rotate-50"
         aria-hidden="true"
       />
-      <div className="relative overflow-hidden rounded-16 border-2 border-portfolio-text bg-portfolio-surface shadow-solid">
+      <div className="relative overflow-hidden rounded-16">
         <Image
-          src={pabloImage}
-          alt="Pablo Monteiro, desenvolvedor full stack"
-          width={864}
-          height={1152}
+          src={pabloHeroImage}
+          alt="Pablo Monteiro, desenvolvedor fullstack"
+          width={1756}
+          height={3872}
           priority
-          className="h-auto w-full object-cover"
+          quality={90}
+          sizes="(min-width: 1024px) 380px, (min-width: 640px) 320px, 260px"
+          className="h-auto w-full"
         />
       </div>
     </div>

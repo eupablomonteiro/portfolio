@@ -6,6 +6,7 @@ import { Character } from "@/components/character";
 import { GraphicCutout, GraphicLine } from "@/components/graphics";
 import { Search, ClipboardList, Code2, Rocket } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import { BadgeComments } from "@/components/badgeComments";
 
 interface Step {
   title: string;
@@ -22,7 +23,7 @@ const steps: Step[] = [
       "Antes de qualquer linha de código, eu preciso entender o problema. Pergunto, investigo e só então defino o caminho.",
     icon: Search,
     color: "var(--color-portfolio-primary)",
-    bg: "bg-portfolio-primary/10",
+    bg: "bg-portfolio-bg",
   },
   {
     title: "Planejar",
@@ -30,7 +31,7 @@ const steps: Step[] = [
       "Escopo claro, arquitetura simples e decisões que valem a pena. Um bom planejamento economiza semanas de retrabalho.",
     icon: ClipboardList,
     color: "var(--color-portfolio-green)",
-    bg: "bg-portfolio-green/15",
+    bg: "bg-portfolio-bg",
   },
   {
     title: "Construir",
@@ -38,15 +39,15 @@ const steps: Step[] = [
       "Código limpo, componentizado e revisado a cada passo. Pequenos avanços diários em vez de mudanças gigantes de última hora.",
     icon: Code2,
     color: "var(--color-portfolio-gold)",
-    bg: "bg-portfolio-gold/20",
+    bg: "bg-portfolio-bg",
   },
   {
     title: "Entregar",
     description:
       "Deploy, testes e monitoramento. E depois: refatorar, medir, evoluir. O ciclo recomeça — e o produto cresce junto.",
     icon: Rocket,
-    color: "var(--color-portfolio-text)",
-    bg: "bg-portfolio-text/5",
+    color: "var(--color-portfolio-primary-dark)",
+    bg: "bg-portfolio-bg",
   },
 ];
 
@@ -80,7 +81,8 @@ export function Process() {
           transition={{ duration: 0.3, ease: "easeOut" }}
           className="mb-14 flex flex-col items-start gap-4"
         >
-          <Badge variant="green">processo</Badge>
+          <BadgeComments comment="Processo" />
+
           <h2 className="font-heading text-4xl font-bold tracking-tight md:text-[48px]">
             Como eu <span className="text-portfolio-primary">trabalho</span>
           </h2>
@@ -99,7 +101,7 @@ export function Process() {
             className="relative lg:col-span-8"
           >
             <div className="absolute left-[26px] top-0 bottom-0 w-[2px] bg-gradient-to-b from-portfolio-primary/40 via-portfolio-green/40 to-portfolio-text/30" />
-
+            
             {steps.map((step) => (
               <motion.div
                 key={step.title}
@@ -107,7 +109,7 @@ export function Process() {
                 className="relative mb-10 pl-20 last:mb-0"
               >
                 <div
-                  className={`absolute left-0 top-0 flex h-[52px] w-[52px] items-center justify-center rounded-16 border-[1.5px] border-portfolio-text bg-portfolio-surface shadow-solid-sm ${step.bg}`}
+                  className={`absolute left-0 top-0 flex h-[52px] w-[52px] items-center justify-center rounded-16 border-[1.5px] border-portfolio-text shadow-solid-sm ${step.bg}`}
                 >
                   <step.icon size={22} style={{ color: step.color }} />
                 </div>

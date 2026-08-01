@@ -1,9 +1,11 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Badge, Text } from "@/components/ui";
-import { Character } from "@/components/character";
+import { Text } from "@/components/ui";
+import Image from "next/image";
+import pabloTecnologiaImage from "@/assets/pablo-tecnologia-section.png";
 import { GraphicLine, GraphicScribble } from "@/components/graphics";
+import { BadgeComments } from "@/components/badgeComments";
 import {
   SiTypescript,
   SiJavascript,
@@ -94,11 +96,6 @@ export function Technologies() {
       <GraphicScribble className="absolute top-16 right-[4%] h-9 w-9 text-portfolio-green" />
       <GraphicLine className="absolute bottom-24 left-[3%] w-24 text-portfolio-primary" />
 
-      <Character
-        pose="peek"
-        className="absolute right-[6%] top-40 h-28 hidden xl:block"
-      />
-
       <div className="mx-auto max-w-[1200px] px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -107,9 +104,12 @@ export function Technologies() {
           transition={{ duration: 0.3, ease: "easeOut" }}
           className="mb-12 flex flex-col items-start gap-4"
         >
-          <Badge variant="primary">tecnologias</Badge>
+          <BadgeComments comment="Tecnologias" />
+
           <h2 className="font-heading text-4xl font-bold tracking-tight md:text-[48px]">
-            As ferramentas que <span className="text-portfolio-primary">escolho</span> para construir
+            As ferramentas que{" "}
+            <span className="text-portfolio-primary">escolho</span> para
+            construir
           </h2>
           <Text variant="muted" className="max-w-md">
             Frameworks mudam. A capacidade de aprender permanece — e é isso que
@@ -117,12 +117,21 @@ export function Technologies() {
           </Text>
         </motion.div>
 
+        <Image
+          src={pabloTecnologiaImage}
+          width={2888}
+          height={1816}
+          alt="Pablo Monteiro espiando por trás de um cartão de tecnologias"
+          sizes="(min-width: 768px) 680px, 100vw"
+          className="relative z-0 mx-auto h-auto w-full max-w-[680px] rounded-16"
+        />
+
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-50px" }}
-          className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+          className="relative z-10 -mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
         >
           {technologies.map((tech, i) => (
             <TechCard key={tech.name} tech={tech} featured={i === 0} />
@@ -133,13 +142,7 @@ export function Technologies() {
   );
 }
 
-function TechCard({
-  tech,
-  featured,
-}: {
-  tech: Tech;
-  featured?: boolean;
-}) {
+function TechCard({ tech, featured }: { tech: Tech; featured?: boolean }) {
   const Icon = tech.icon;
 
   return (

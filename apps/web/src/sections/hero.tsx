@@ -73,30 +73,29 @@ export function Hero() {
             variants={itemVariants}
             className="font-mono text-sm font-medium text-portfolio-primary"
           >
-            {"// "}desenvolvedor full stack
+            {"// "} Desenvolvedor de Software
           </motion.p>
 
           <motion.h1
             variants={itemVariants}
             className="font-heading text-5xl font-extrabold leading-[1.05] tracking-tight md:text-6xl lg:text-[80px]"
           >
-            Software é construído
+            A vontade que
             <br />
-            com{" "}
+            vira{" "}
             <span className="relative inline-block text-portfolio-primary">
-              disciplina
+              software.
               <GraphicScribble className="absolute -bottom-2 left-0 h-7 w-full text-portfolio-gold" />
             </span>
-            .
           </motion.h1>
 
           <motion.p
             variants={itemVariants}
             className="max-w-lg text-lg leading-relaxed text-portfolio-text-secondary"
           >
-            Sou Pablo Monteiro, desenvolvedor full stack. Grandes resultados
-            nascem de pequenos avanços diários — e é assim que eu construo cada
-            projeto.
+            Sou Pablo Monteiro, desenvolvedor fullstack. Eu acredito que grandes resultados
+            nascem da força de vontade - e é assim que eu construo cada projeto.
+            Tenho alguns anos de experiência com desenvolvimento web atuando sozinho em grandes projetos como freelancer. 
           </motion.p>
 
           <motion.div
@@ -142,7 +141,7 @@ export function Hero() {
           transition={{ duration: 0.4, ease: "easeOut", delay: 0.35 }}
           className="col-span-12 flex justify-center lg:col-span-5"
         >
-          <motion.div style={{ y: characterY }} className="w-full max-w-[380px]">
+          <motion.div style={{ y: characterY }} className="mx-auto w-full max-w-[260px] sm:max-w-[320px] lg:max-w-[380px]">
             <Character pose="hero" />
           </motion.div>
         </motion.div>

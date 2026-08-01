@@ -1,9 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Badge, Heading, Text } from "@/components/ui";
+import { Heading, Text } from "@/components/ui";
 import { GraphicScribble, GraphicStar } from "@/components/graphics";
 import { ExternalLink, GitBranch } from "lucide-react";
+import { BadgeComments } from "@/components/badgeComments";
 
 interface Project {
   title: string;
@@ -76,7 +77,8 @@ export function Projects() {
           transition={{ duration: 0.3, ease: "easeOut" }}
           className="mb-12 flex flex-col items-start gap-4"
         >
-          <Badge variant="gold">projetos</Badge>
+          <BadgeComments comment="Projetos" />
+
           <Heading as="h2">
             O que eu já <span className="text-portfolio-primary">construí</span>
           </Heading>
@@ -106,13 +108,7 @@ export function Projects() {
   );
 }
 
-function ProjectCard({
-  project,
-  wide,
-}: {
-  project: Project;
-  wide?: boolean;
-}) {
+function ProjectCard({ project, wide }: { project: Project; wide?: boolean }) {
   return (
     <motion.article
       variants={cardVariants}
@@ -169,13 +165,7 @@ function ProjectCard({
   );
 }
 
-function ProjectArt({
-  color,
-  wide,
-}: {
-  color: string;
-  wide?: boolean;
-}) {
+function ProjectArt({ color, wide }: { color: string; wide?: boolean }) {
   return (
     <svg
       viewBox={wide ? "0 0 800 340" : "0 0 400 340"}
@@ -184,19 +174,115 @@ function ProjectArt({
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
     >
-      <rect x="80" y="50" width={wide ? 640 : 240} height="240" rx="16" stroke={color} strokeWidth="2" opacity="0.35" />
-      <rect x="104" y="74" width={wide ? 200 : 80} height="130" rx="10" fill={color} fillOpacity="0.12" stroke={color} strokeWidth="1.5" strokeOpacity="0.4" />
-      <circle cx={wide ? 150 : 130} cy={wide ? 150 : 150} r="26" stroke={color} strokeWidth="2" opacity="0.5" />
-      <path d="M136 162 Q 150 150, 164 162" stroke={color} strokeWidth="2" strokeLinecap="round" opacity="0.5" />
-      <rect x={wide ? 130 : 120} y="176" width="50" height="6" rx="3" fill={color} opacity="0.3" />
-      <rect x={wide ? 330 : 210} y="74" width={wide ? 200 : 80} height="130" rx="10" fill={color} fillOpacity="0.08" stroke={color} strokeWidth="1.5" strokeOpacity="0.4" />
-      <path d="M350 120 L 370 100 L 390 120 L 410 100 L 430 120" stroke={color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" opacity="0.5" />
-      <path d="M350 140 L 370 120 L 390 140 L 410 120 L 430 140" stroke={color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" opacity="0.3" />
-      <rect x={wide ? 560 : 210} y="120" width="10" height="60" rx="4" fill={color} opacity="0.35" />
-      <rect x={wide ? 580 : 230} y="100" width="10" height="80" rx="4" fill={color} opacity="0.2" />
-      <rect x={wide ? 600 : 250} y="140" width="10" height="40" rx="4" fill={color} opacity="0.3" />
+      <rect
+        x="80"
+        y="50"
+        width={wide ? 640 : 240}
+        height="240"
+        rx="16"
+        stroke={color}
+        strokeWidth="2"
+        opacity="0.35"
+      />
+      <rect
+        x="104"
+        y="74"
+        width={wide ? 200 : 80}
+        height="130"
+        rx="10"
+        fill={color}
+        fillOpacity="0.12"
+        stroke={color}
+        strokeWidth="1.5"
+        strokeOpacity="0.4"
+      />
+      <circle
+        cx={wide ? 150 : 130}
+        cy={wide ? 150 : 150}
+        r="26"
+        stroke={color}
+        strokeWidth="2"
+        opacity="0.5"
+      />
+      <path
+        d="M136 162 Q 150 150, 164 162"
+        stroke={color}
+        strokeWidth="2"
+        strokeLinecap="round"
+        opacity="0.5"
+      />
+      <rect
+        x={wide ? 130 : 120}
+        y="176"
+        width="50"
+        height="6"
+        rx="3"
+        fill={color}
+        opacity="0.3"
+      />
+      <rect
+        x={wide ? 330 : 210}
+        y="74"
+        width={wide ? 200 : 80}
+        height="130"
+        rx="10"
+        fill={color}
+        fillOpacity="0.08"
+        stroke={color}
+        strokeWidth="1.5"
+        strokeOpacity="0.4"
+      />
+      <path
+        d="M350 120 L 370 100 L 390 120 L 410 100 L 430 120"
+        stroke={color}
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        opacity="0.5"
+      />
+      <path
+        d="M350 140 L 370 120 L 390 140 L 410 120 L 430 140"
+        stroke={color}
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        opacity="0.3"
+      />
+      <rect
+        x={wide ? 560 : 210}
+        y="120"
+        width="10"
+        height="60"
+        rx="4"
+        fill={color}
+        opacity="0.35"
+      />
+      <rect
+        x={wide ? 580 : 230}
+        y="100"
+        width="10"
+        height="80"
+        rx="4"
+        fill={color}
+        opacity="0.2"
+      />
+      <rect
+        x={wide ? 600 : 250}
+        y="140"
+        width="10"
+        height="40"
+        rx="4"
+        fill={color}
+        opacity="0.3"
+      />
       {wide && (
-        <path d="M140 250 Q 260 220, 380 250 Q 500 280, 620 250 Q 700 235, 720 245" stroke={color} strokeWidth="2" strokeLinecap="round" opacity="0.3" />
+        <path
+          d="M140 250 Q 260 220, 380 250 Q 500 280, 620 250 Q 700 235, 720 245"
+          stroke={color}
+          strokeWidth="2"
+          strokeLinecap="round"
+          opacity="0.3"
+        />
       )}
     </svg>
   );

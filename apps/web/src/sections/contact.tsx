@@ -5,6 +5,7 @@ import { Badge, buttonVariants, Heading, Text } from "@/components/ui";
 import { Character } from "@/components/character";
 import { GraphicScribble, GraphicStar } from "@/components/graphics";
 import { Mail, Briefcase, FileDown } from "lucide-react";
+import { BadgeComments } from "@/components/badgeComments";
 
 const links = [
   {
@@ -41,10 +42,11 @@ export function Contact() {
           transition={{ duration: 0.35, ease: "easeOut" }}
           className="col-span-12 flex flex-col items-start gap-5 lg:col-span-7"
         >
-          <Badge variant="primary">contato</Badge>
+          <BadgeComments comment="Contato" />
+
           <Heading as="h2">
-            Vamos{" "}
-            <span className="text-portfolio-primary">trabalhar</span> juntos?
+            Vamos <span className="text-portfolio-primary">trabalhar</span>{" "}
+            juntos?
           </Heading>
           <Text variant="muted" className="max-w-md">
             Estou em busca da minha primeira oportunidade como dev júnior. Se
