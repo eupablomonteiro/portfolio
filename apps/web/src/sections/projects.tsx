@@ -5,6 +5,8 @@ import { Heading, Text } from "@/components/ui";
 import { GraphicScribble, GraphicStar } from "@/components/graphics";
 import { ExternalLink, GitBranch } from "lucide-react";
 import { BadgeComments } from "@/components/badgeComments";
+import Image from "next/image";
+import pabloProjetosSection from "@/assets/pablo-projetos-section.png";
 
 interface Project {
   title: string;
@@ -88,21 +90,40 @@ export function Projects() {
           </Text>
         </motion.div>
 
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
-          className="grid grid-cols-1 gap-8 md:grid-cols-2"
-        >
-          {projects.map((project) => (
-            <ProjectCard
-              key={project.title}
-              project={project}
-              wide={project.wide}
+        <div className="relative">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+            className="pointer-events-none absolute -top-8 left-0 z-10 w-[180px] sm:-top-10 sm:w-[240px] lg:-top-14 lg:w-[320px]"
+          >
+            <Image
+              src={pabloProjetosSection}
+              alt="Pablo Monteiro apresentando seus projetos"
+              width={2020}
+              height={3932}
+              sizes="(min-width: 1024px) 320px, (min-width: 640px) 240px, 180px"
+              className="h-auto w-full"
             />
-          ))}
-        </motion.div>
+          </motion.div>
+
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            className="grid grid-cols-1 gap-8 md:grid-cols-2"
+          >
+            {projects.map((project) => (
+              <ProjectCard
+                key={project.title}
+                project={project}
+                wide={project.wide}
+              />
+            ))}
+          </motion.div>
+        </div>
       </div>
     </section>
   );

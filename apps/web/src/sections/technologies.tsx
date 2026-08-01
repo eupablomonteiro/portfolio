@@ -123,7 +123,7 @@ export function Technologies() {
           height={1816}
           alt="Pablo Monteiro espiando por trás de um cartão de tecnologias"
           sizes="(min-width: 768px) 680px, 100vw"
-          className="relative z-10 -mb-10 mx-auto h-auto w-full max-w-[680px] rounded-16 sm:-mb-14"
+          className="relative z-10 mx-auto h-auto w-full max-w-[680px] rounded-16 sm:-mb-9"
         />
 
         <motion.div
