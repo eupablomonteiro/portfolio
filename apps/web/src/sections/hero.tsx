@@ -141,7 +141,7 @@ export function Hero() {
           transition={{ duration: 0.4, ease: "easeOut", delay: 0.35 }}
           className="col-span-12 flex justify-center lg:col-span-5"
         >
-          <motion.div style={{ y: characterY }} className="mx-auto w-full max-w-[220px] sm:max-w-[320px] lg:max-w-[380px]">
+          <motion.div style={{ y: characterY }} className="mx-auto w-[60vw] max-w-[220px] sm:max-w-[320px] lg:max-w-[380px]">
             <Character pose="hero" />
           </motion.div>
         </motion.div>

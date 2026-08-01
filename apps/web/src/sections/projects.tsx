@@ -67,10 +67,10 @@ function wrapX(value: number, setWidth: number) {
 export function Projects() {
   const containerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
+  const firstSetRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLElement | null)[]>([]);
 
   const xRef = useRef(0);
-  const setWidthRef = useRef(0);
   const draggingRef = useRef(false);
   const hoverRef = useRef(false);
   const reducedMotionRef = useRef(false);
@@ -78,17 +78,14 @@ export function Projects() {
   const movedRef = useRef(false);
   const rafRef = useRef<number | null>(null);
 
-  const measure = useCallback(() => {
-    if (trackRef.current) setWidthRef.current = trackRef.current.scrollWidth / 2;
-  }, []);
-
   const handlePointerMove = useCallback((e: PointerEvent) => {
     if (!draggingRef.current) return;
     const dx = e.clientX - lastPointerXRef.current;
     if (!movedRef.current && Math.abs(dx) < DRAG_THRESHOLD) return;
     movedRef.current = true;
     lastPointerXRef.current = e.clientX;
-    xRef.current = wrapX(xRef.current + dx, setWidthRef.current);
+    const setWidth = firstSetRef.current?.offsetWidth ?? 0;
+    xRef.current = wrapX(xRef.current + dx, setWidth);
   }, []);
 
   const suppressClick = useCallback((e: MouseEvent) => {
@@ -121,25 +118,21 @@ export function Projects() {
     reducedMotionRef.current = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
-    measure();
-    const observer = new ResizeObserver(measure);
-    if (containerRef.current) observer.observe(containerRef.current);
-    window.addEventListener("resize", measure);
 
     let last = performance.now();
     const loop = (now: number) => {
       const dt = Math.min(now - last, 50);
       last = now;
-      const setWidth = setWidthRef.current;
+
+      const setWidth = firstSetRef.current?.offsetWidth ?? 0;
 
       if (
+        setWidth > 0 &&
         !draggingRef.current &&
         !hoverRef.current &&
-        !reducedMotionRef.current &&
-        setWidth > 0
+        !reducedMotionRef.current
       ) {
-        xRef.current += (SPEED * dt) / 16.67;
-        if (xRef.current >= setWidth) xRef.current -= setWidth;
+        xRef.current = wrapX(xRef.current + (SPEED * dt) / 16.67, setWidth);
       }
 
       if (trackRef.current) {
@@ -167,10 +160,8 @@ export function Projects() {
 
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      observer.disconnect();
-      window.removeEventListener("resize", measure);
     };
-  }, [measure]);
+  }, []);
 
   return (
     <section
@@ -235,7 +226,11 @@ export function Projects() {
           >
             <div ref={trackRef} className="flex w-max py-4 will-change-transform">
               {[0, 1].map((set) => (
-                <div key={set} className="flex gap-10 pr-10">
+                <div
+                  key={set}
+                  ref={set === 0 ? firstSetRef : undefined}
+                  className="flex gap-10 pr-10"
+                >
                   {projects.map((project, i) => (
                     <ProjectCard
                       key={`${set}-${project.title}`}

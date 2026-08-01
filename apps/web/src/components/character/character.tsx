@@ -26,7 +26,7 @@ function HeroCharacter({ className }: { className?: string }) {
   return (
     <div className={cn("relative", className)}>
       <div
-        className="absolute -inset-3 rotate-6 rounded-16 bg-portfolio-gold/40 sm:-inset-10 sm:rotate-50"
+        className="absolute -inset-10 hidden rotate-50 rounded-16 bg-portfolio-gold/40 sm:block"
         aria-hidden="true"
       />
       <div className="relative overflow-hidden rounded-16">
