@@ -55,7 +55,7 @@ export function Hero() {
     <section
       ref={sectionRef}
       id="hero"
-      className="relative flex min-h-screen items-center overflow-hidden pb-24 pt-32 paper-texture"
+      className="relative flex min-h-auto items-center overflow-hidden pb-24 pt-32 paper-texture"
     >
       <GraphicScribble className="absolute top-24 right-[8%] h-10 w-10 text-portfolio-primary" />
       <GraphicStar className="absolute top-40 left-[4%] h-5 w-5 text-portfolio-gold" />
@@ -141,7 +141,7 @@ export function Hero() {
           transition={{ duration: 0.4, ease: "easeOut", delay: 0.35 }}
           className="col-span-12 flex justify-center lg:col-span-5"
         >
-          <motion.div style={{ y: characterY }} className="mx-auto w-full max-w-[260px] sm:max-w-[320px] lg:max-w-[380px]">
+          <motion.div style={{ y: characterY }} className="mx-auto w-full max-w-[220px] sm:max-w-[320px] lg:max-w-[380px]">
             <Character pose="hero" />
           </motion.div>
         </motion.div>
