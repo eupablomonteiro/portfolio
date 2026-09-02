@@ -3,13 +3,14 @@
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui";
-import { Menu, X, GitBranch } from "lucide-react";
+import { Menu, X, LogIn } from "lucide-react";
+import { Icon } from "@iconify/react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const links = [
-  { href: "#technologies", label: "Tecnologias" },
+  { href: "#technologies", label: "Stack" },
+  { href: "#experience", label: "Experiência" },
   { href: "#projects", label: "Projetos" },
-  { href: "#process", label: "Processo" },
   { href: "#contact", label: "Contato" },
 ];
 
@@ -40,7 +41,9 @@ export function Navbar() {
           href="#hero"
           className="flex items-center gap-4 justify-center font-mono text-sm font-semibold text-portfolio-text"
         >
-          eupablomonteiro<span className="text-portfolio-primary">.dev</span>
+          <span className="font-mono text-sm font-semibold text-portfolio-text">
+            eupablomonteiro<span className="text-portfolio-primary">.dev</span>
+          </span>
         </a>
 
         <div className="hidden md:flex items-center gap-8">
@@ -54,13 +57,12 @@ export function Navbar() {
             </a>
           ))}
           <a
-            href="https://GitBranch.com/eupablomonteiro"
-            target="_blank"
+            href="/login"
             rel="noopener noreferrer"
             className={buttonVariants({ variant: "primary", size: "sm" })}
           >
-            <GitBranch size={16} />
-            GitBranch
+            <LogIn size={16} />
+            Login
           </a>
         </div>
 
@@ -93,13 +95,13 @@ export function Navbar() {
               </a>
             ))}
             <a
-              href="https://GitBranch.com/eupablomonteiro"
+              href="https://github.com/eupablomonteiro"
               target="_blank"
               rel="noopener noreferrer"
               className={buttonVariants({ variant: "primary", size: "sm" })}
             >
-              <GitBranch size={16} />
-              GitBranch
+              <Icon icon="simple-icons:github" width={16} height={16} />
+              GitHub
             </a>
           </motion.div>
         )}

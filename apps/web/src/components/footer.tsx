@@ -1,22 +1,24 @@
 import { Container } from "@/components/ui";
-import { GitBranch, Briefcase, Mail, ArrowUp } from "lucide-react";
+import { Mail, ArrowUp } from "lucide-react";
+import { Icon } from "@iconify/react";
 import pabloLogo from "@/assets/pablo-logo.png";
 import Image from "next/image";
 
 const socials = [
-  { href: "https://github.com/eupablomonteiro", icon: GitBranch, label: "GitHub" },
+  { href: "https://github.com/eupablomonteiro", icon: "simple-icons:github", label: "GitHub", isIconify: true } as const,
   {
     href: "https://linkedin.com/in/eupablomonteiro",
-    icon: Briefcase,
+    icon: "simple-icons:linkedin",
     label: "LinkedIn",
-  },
-  { href: "mailto:contato@pablomonteiro.dev", icon: Mail, label: "Email" },
+    isIconify: true,
+  } as const,
+  { href: "mailto:pablo.monteirorgt19@gmail.com", icon: Mail, label: "Gmail" } as const,
 ];
 
 const navLinks = [
-  { href: "#technologies", label: "Tecnologias" },
+  { href: "#technologies", label: "Stack" },
+  { href: "#experience", label: "Experiência" },
   { href: "#projects", label: "Projetos" },
-  { href: "#process", label: "Processo" },
   { href: "#contact", label: "Contato" },
 ];
 
@@ -42,22 +44,31 @@ export function Footer() {
               </span>
             </a>
             <p className="max-w-xs text-sm leading-relaxed text-portfolio-text-secondary">
-              Desenvolvedor full stack. Software é construído com disciplina —
-              e é assim que eu construo cada projeto.
+              Tenho alguns anos de experiência com desenvolvimento web atuando sozinho em grandes projetos como freelancer.
             </p>
             <div className="flex flex-wrap gap-x-6 gap-y-2">
-              {socials.map(({ href, icon: Icon, label }) => (
-                <a
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-sm font-medium text-portfolio-text-secondary transition-colors hover:text-portfolio-primary"
-                >
-                  <Icon size={18} />
-                  {label}
-                </a>
-              ))}
+              {socials.map(({ href, icon, label }) => {
+                const isIconify = typeof icon === "string";
+                return (
+                  <a
+                    key={label}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 text-sm font-medium text-portfolio-text-secondary transition-colors hover:text-portfolio-primary"
+                  >
+                    {isIconify ? (
+                      <Icon icon={icon as string} width={18} height={18} />
+                    ) : (
+                      (() => {
+                        const LucideIcon = icon as React.ElementType;
+                        return <LucideIcon size={18} />;
+                      })()
+                    )}
+                    {label}
+                  </a>
+                );
+              })}
             </div>
           </div>
 
@@ -87,10 +98,10 @@ export function Footer() {
               Disponível para projetos freelance e novas oportunidades.
             </p>
             <a
-              href="mailto:contato@pablomonteiro.dev"
+              href="mailto:pablo.monteirorgt19@gmail.com"
               className="text-sm font-medium text-portfolio-text-secondary transition-colors hover:text-portfolio-primary"
             >
-              contato@pablomonteiro.dev
+              pablo.monteirorgt19@gmail.com
             </a>
             <p className="text-sm font-medium text-portfolio-text-secondary">
               São Paulo, Brasil

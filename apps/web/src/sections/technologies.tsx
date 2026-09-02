@@ -2,87 +2,114 @@
 
 import { motion } from "framer-motion";
 import { Text } from "@/components/ui";
-import Image from "next/image";
-import pabloTecnologiaImage from "@/assets/pablo-tecnologia-section.png";
-import { GraphicLine, GraphicScribble } from "@/components/graphics";
+import { Icon } from "@iconify/react";
 import { BadgeComments } from "@/components/badgeComments";
-import {
-  SiTypescript,
-  SiJavascript,
-  SiNextdotjs,
-  SiNodedotjs,
-  SiPostgresql,
-  SiPrisma,
-  SiDocker,
-  SiTailwindcss,
-  SiReact,
-} from "react-icons/si";
-import type { IconType } from "react-icons";
+import { GraphicLine, GraphicScribble } from "@/components/graphics";
 
-interface Tech {
-  name: string;
-  icon: IconType;
-  caption: string;
+type Accent =
+  "primary" | "green" | "gold" | "primaryDark" | "text" | "warning" | "surface";
+interface StackGroup {
+  title: string;
+  label: string;
+  icons: string[];
+  items: string[];
+  accent: Accent;
 }
 
-const technologies: Tech[] = [
+const stacks: StackGroup[] = [
   {
-    name: "React",
-    icon: SiReact,
-    caption: "Interfaces componentizadas, do mock ao produto.",
+    title: "Base",
+    label: "Fundação comum",
+    icons: [
+      "simple-icons:html5",
+      "simple-icons:css3",
+      "simple-icons:javascript",
+      "simple-icons:typescript",
+      "simple-icons:git",
+      "simple-icons:github",
+    ],
+    items: ["HTML", "CSS", "JavaScript", "TypeScript", "Git", "API REST"],
+    accent: "text" as const,
   },
   {
-    name: "Next.js",
-    icon: SiNextdotjs,
-    caption: "App Router, renderização híbrida e performance.",
+    title: "Frontend",
+    label: "Interfaces que performam",
+    icons: [
+      "simple-icons:react",
+      "simple-icons:nextdotjs",
+      "simple-icons:tailwindcss",
+    ],
+    items: ["React", "Next.js", "Tailwind CSS"],
+    accent: "primary" as const,
   },
   {
-    name: "TypeScript",
-    icon: SiTypescript,
-    caption: "Tipos que evitam bugs antes de existirem.",
+    title: "Backend",
+    label: "APIs sólidas",
+    icons: [
+      "simple-icons:nodedotjs",
+      "simple-icons:express",
+      "simple-icons:swagger",
+      "simple-icons:auth0",
+      "simple-icons:jsonwebtokens",
+    ],
+    items: ["Node.js", "Express", "Swagger", "OAuth 2.0", "JWT"],
+    accent: "green" as const,
   },
   {
-    name: "JavaScript",
-    icon: SiJavascript,
-    caption: "A base. Todo dia, em todo lugar.",
+    title: "Banco de Dados",
+    label: "Dados com integridade",
+    icons: [
+      "simple-icons:postgresql",
+      "simple-icons:prisma",
+      "simple-icons:mongodb",
+    ],
+    items: ["PostgreSQL", "Prisma", "MongoDB"],
+    accent: "gold" as const,
   },
   {
-    name: "Node.js",
-    icon: SiNodedotjs,
-    caption: "APIs e servidores com a mesma linguagem do front.",
+    title: "Filas & Realtime",
+    label: "Processamento assíncrono",
+    icons: ["simple-icons:redis", "simple-icons:socketdotio"],
+    items: ["BullMQ", "Redis", "WebSocket"],
+    accent: "primaryDark" as const,
   },
   {
-    name: "PostgreSQL",
-    icon: SiPostgresql,
-    caption: "Dados relacionais com integridade e confiança.",
+    title: "Testes",
+    label: "Confiança no deploy",
+    icons: ["simple-icons:jest", "simple-icons:vitest"],
+    items: ["Jest", "Vitest"],
+    accent: "warning" as const,
   },
   {
-    name: "Prisma",
-    icon: SiPrisma,
-    caption: "ORM type-safe, schema claro e migrações simples.",
+    title: "Infra & Gestão",
+    label: "Fluxo e entrega",
+    icons: [
+      "simple-icons:docker",
+      "simple-icons:cloudflare",
+      "simple-icons:trello",
+    ],
+    items: ["Docker", "Cloudflare", "Kanban", "Trello"],
+    accent: "surface" as const,
   },
-  {
-    name: "Docker",
-    icon: SiDocker,
-    caption: "Ambientes consistentes, do dev ao deploy.",
-  },
-  {
-    name: "Tailwind CSS",
-    icon: SiTailwindcss,
-    caption: "Estilo rápido, consistente e sem CSS sujo.",
-  },
+];
+
+const spotlightPos = [
+  "top-[-50px] right-[-40px]",
+  "bottom-[-30px] left-[-20px]",
+  "top-[20%] right-[10%]",
+  "bottom-[10%] right-[-20px]",
+  "top-[-20px] left-[30%]",
+  "bottom-[-40px] right-[20%]",
+  "top-[10%] left-[-20px]",
 ];
 
 const containerVariants = {
   hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.06 },
-  },
+  visible: { opacity: 1, transition: { staggerChildren: 0.06 } },
 };
 
 const cardVariants = {
-  hidden: { opacity: 0, y: 24 },
+  hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,
     y: 0,
@@ -104,70 +131,142 @@ export function Technologies() {
           transition={{ duration: 0.3, ease: "easeOut" }}
           className="mb-12 flex flex-col items-start gap-4"
         >
-          <BadgeComments comment="Tecnologias" />
-
+          <BadgeComments comment="Stack" />
           <h2 className="font-heading text-4xl font-bold tracking-tight md:text-[48px]">
-            As ferramentas que{" "}
-            <span className="text-portfolio-primary">escolho</span> para
-            construir
+            Stack que{" "}
+            <span className="text-portfolio-primary">uso no dia a dia</span>
           </h2>
-          <Text variant="muted" className="max-w-md">
-            Frameworks mudam. A capacidade de aprender permanece — e é isso que
-            eu levo de cada tecnologia.
+          <Text variant="muted" className="max-w-xl">
+            As tecnologias que mais uso ao construir meus projetos Fullstack de entrega confiáveis.
           </Text>
         </motion.div>
-
-        <Image
-          src={pabloTecnologiaImage}
-          width={2888}
-          height={1816}
-          alt="Pablo Monteiro espiando por trás de um cartão de tecnologias"
-          sizes="(min-width: 768px) 680px, 100vw"
-          className="relative z-10 mx-auto h-auto w-full max-w-[680px] rounded-16 sm:-mb-9"
-        />
 
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-50px" }}
-          className="relative z-0 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+          className="grid grid-cols-1 gap-6 md:grid-cols-12 auto-rows-fr"
         >
-          {technologies.map((tech, i) => (
-            <TechCard key={tech.name} tech={tech} featured={i === 0} />
-          ))}
+          {stacks.map((group, idx) => {
+            const accentMap = {
+              primary: {
+                bg: "bg-portfolio-primary",
+                ring: "ring-portfolio-primary/20",
+                text: "text-portfolio-primary",
+                soft: "bg-portfolio-primary/10",
+                glow: "bg-portfolio-primary",
+              },
+              green: {
+                bg: "bg-portfolio-green",
+                ring: "ring-portfolio-green/20",
+                text: "text-portfolio-green",
+                soft: "bg-portfolio-green/15",
+                glow: "bg-portfolio-green",
+              },
+              gold: {
+                bg: "bg-portfolio-gold",
+                ring: "ring-portfolio-gold/20",
+                text: "text-portfolio-gold",
+                soft: "bg-portfolio-gold/20",
+                glow: "bg-portfolio-gold",
+              },
+              primaryDark: {
+                bg: "bg-portfolio-primary-dark",
+                ring: "ring-portfolio-primary-dark/20",
+                text: "text-portfolio-primary-dark",
+                soft: "bg-portfolio-primary-dark/10",
+                glow: "bg-portfolio-primary-dark",
+              },
+              text: {
+                bg: "bg-portfolio-text",
+                ring: "ring-portfolio-text/10",
+                text: "text-portfolio-text",
+                soft: "bg-portfolio-text/5",
+                glow: "bg-portfolio-text",
+              },
+              warning: {
+                bg: "bg-portfolio-warning",
+                ring: "ring-portfolio-warning/20",
+                text: "text-portfolio-warning",
+                soft: "bg-portfolio-warning/15",
+                glow: "bg-portfolio-warning",
+              },
+              surface: {
+                bg: "bg-portfolio-text",
+                ring: "ring-portfolio-text/10",
+                text: "text-portfolio-text",
+                soft: "bg-portfolio-bg",
+                glow: "bg-portfolio-text",
+              },
+            }[group.accent];
+
+            const isBase = idx === 0;
+            const colSpan = isBase
+              ? "md:col-span-12"
+              : idx === 1
+                ? "md:col-span-7"
+                : idx === 2
+                  ? "md:col-span-5"
+                  : idx === 3
+                    ? "md:col-span-5"
+                    : idx === 4
+                      ? "md:col-span-7"
+                      : idx === 5
+                        ? "md:col-span-5"
+                        : "md:col-span-7";
+
+            return (
+              <motion.div
+                key={group.title}
+                variants={cardVariants}
+                className={`group relative flex flex-col overflow-hidden rounded-16 bg-portfolio-surface p-6 shadow-solid ring-1 ring-portfolio-border transition-all duration-300 hover:shadow-solid-lg hover:-translate-y-1 hover:ring-portfolio-text/10 md:p-7 ${colSpan} ${isBase ? "md:flex-row md:items-center md:gap-8" : ""}`}
+              >
+                <div
+                  className={`pointer-events-none absolute h-64 w-64 rounded-full blur-3xl opacity-[0.07] transition-opacity duration-300 group-hover:opacity-[0.18] ${spotlightPos[idx]} ${accentMap.glow}`}
+                />
+
+                <div className={isBase ? "md:w-[320px] shrink-0" : ""}>
+                  <h3 className="font-heading text-xl font-extrabold tracking-tight text-portfolio-text">
+                    {group.title}
+                  </h3>
+                  <p className="mt-1 font-mono text-xs font-medium text-portfolio-text-secondary">
+                    {group.label}
+                  </p>
+                  <div className="mt-4 flex gap-2.5 flex-wrap">
+                    {group.icons.map((ic) => (
+                      <span
+                        key={ic}
+                        className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-12 ${accentMap.soft} ring-1 ${accentMap.ring}`}
+                      >
+                        <Icon
+                          icon={ic}
+                          width={18}
+                          height={18}
+                          className={accentMap.text}
+                        />
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div
+                  className={`flex flex-wrap gap-2 ${isBase ? "md:flex-1 md:justify-end md:pt-0 pt-5 mt-auto" : "mt-auto pt-5"}`}
+                >
+                  {group.items.map((it) => (
+                    <span
+                      key={it}
+                      className={`rounded-full ${accentMap.soft} px-3 py-1 text-xs font-semibold ${accentMap.text} ring-1 ${accentMap.ring}`}
+                    >
+                      {it}
+                    </span>
+                  ))}
+                </div>
+              </motion.div>
+            );
+          })}
         </motion.div>
       </div>
     </section>
-  );
-}
-
-function TechCard({ tech, featured }: { tech: Tech; featured?: boolean }) {
-  const Icon = tech.icon;
-
-  return (
-    <motion.div
-      variants={cardVariants}
-      whileHover={{ y: -4, transition: { duration: 0.15 } }}
-      className={`group rounded-16 bg-portfolio-surface shadow-solid ring-1 ring-portfolio-border transition-all duration-150 hover:shadow-solid-sm ${
-        featured ? "sm:col-span-2 lg:col-span-1" : ""
-      }`}
-    >
-      <div className="flex items-start gap-4 p-7">
-        <div
-          className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-12 bg-portfolio-primary/10 transition-transform duration-150 group-hover:scale-105`}
-        >
-          <Icon size={28} className="text-portfolio-primary" />
-        </div>
-        <div>
-          <h3 className="font-heading text-xl font-bold text-portfolio-text">
-            {tech.name}
-          </h3>
-          <Text variant="muted" className="mt-1.5">
-            {tech.caption}
-          </Text>
-        </div>
-      </div>
-    </motion.div>
   );
 }

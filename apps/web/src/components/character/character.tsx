@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import pabloHeroImage from "@/assets/pablo-hero-section.png";
+import pabloHeroImage from "@/assets/pablo-hero-cruzado.png";
 
 export type CharacterPose = "hero" | "peek" | "wave" | "confused" | "bye";
 
@@ -33,8 +33,8 @@ function HeroCharacter({ className }: { className?: string }) {
         <Image
           src={pabloHeroImage}
           alt="Pablo Monteiro, desenvolvedor fullstack"
-          width={1756}
-          height={3872}
+          width={2076}
+          height={4544}
           priority
           quality={100}
           sizes="(min-width: 1024px) 380px, (min-width: 640px) 320px, 220px"
