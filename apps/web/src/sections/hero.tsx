@@ -189,5 +189,3 @@ export function Hero() {
     </section>
   );
 }
-
-// npx @21st-dev/cli add uilayout.contact/stacking-card

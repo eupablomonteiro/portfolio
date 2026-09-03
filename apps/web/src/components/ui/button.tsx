@@ -12,7 +12,9 @@ const buttonVariants = cva(
           "bg-portfolio-primary text-white shadow-solid hover:-translate-y-0.5 hover:bg-portfolio-primary-hover hover:shadow-solid-sm",
         secondary:
           "bg-portfolio-surface text-portfolio-primary border-[1.5px] border-portfolio-primary shadow-solid hover:-translate-y-0.5 hover:bg-portfolio-primary hover:text-white hover:shadow-solid-sm",
-      },
+        tertiary:
+          "bg-portfolio-text text-portfolio-bg shadow-solid hover:-translate-y-0.5 hover:bg-portfolio-bg hover:text-portfolio-text hover:shadow-solid-sm",
+        },
       size: {
         sm: "h-10 px-4 text-sm",
         md: "h-12 px-6 text-sm",

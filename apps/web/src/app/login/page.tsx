@@ -1,4 +1,6 @@
+import { signIn } from "@/lib/auth";
 import { Icon } from "@iconify/react";
+import { buttonVariants } from "@/components/ui";
 
 export default function LoginPage() {
   return (
@@ -10,19 +12,44 @@ export default function LoginPage() {
       <div className="relative w-full max-w-[420px] rounded-16 bg-portfolio-surface p-8 shadow-solid-lg ring-1 ring-portfolio-border">
         <div className="flex flex-col items-center gap-3">
           <div className="h-12 w-12 rounded-full bg-portfolio-text flex items-center justify-center">
-            <Icon icon="simple-icons:github" width={22} height={22} className="text-white" />
+            <Icon
+              icon="simple-icons:github"
+              width={22}
+              height={22}
+              className="text-white"
+            />
           </div>
-          <h1 className="font-heading text-2xl font-bold text-portfolio-text">Acesso restrito</h1>
-          <p className="text-sm text-center text-portfolio-text-secondary max-w-[300px]">Área exclusiva do proprietário. Autenticação via GitHub.</p>
+          <div className="flex flex-col items-center">
+            <h1 className="font-heading text-2xl font-bold text-portfolio-text">
+              Acesso restrito
+            </h1>
+            <p className="text-sm text-center text-portfolio-text-secondary max-w-[300px]">
+              Área exclusiva do proprietário.
+            </p>
+          </div>
         </div>
 
-        <a href="/admin/projects" className="mt-6 flex w-full items-center justify-center gap-2 rounded-12 bg-portfolio-text px-4 py-3 text-sm font-semibold text-white hover:bg-portfolio-text/90 transition-colors">
-          <Icon icon="simple-icons:github" width={18} height={18} />
-          Entrar com GitHub
-        </a>
+        <form
+          action={async () => {
+            "use server";
+            await signIn("github", { redirectTo: "/admin/projects" });
+          }}
+          className="flex flex-col gap-3 my-4"
+        >
+          <button
+            type="submit"
+            className={buttonVariants({ variant: "tertiary", size: "sm" })}
+          >
+            <Icon icon="simple-icons:github" width={18} height={18} />
+            Entrar com GitHub
+          </button>
+        </form>
 
         <p className="mt-4 text-center font-mono text-xs text-portfolio-text-secondary">
-          {"// "} não é você? <a href="/" className="underline hover:text-portfolio-text">voltar ao site</a>
+          {"// "} não é você?{" "}
+          <a href="/" className="underline hover:text-portfolio-text">
+            voltar ao site
+          </a>
         </p>
       </div>
     </div>
