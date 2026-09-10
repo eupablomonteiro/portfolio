@@ -25,7 +25,7 @@
 
 **Core:** Next.js 14.2 (App Router, RSC), React 18.3, TypeScript 5.6 strict, Tailwind CSS 4, Framer Motion 12, Lenis 1.3, Motion 13, lucide-react 1.28, @iconify/react 6 (simple-icons), next/image, sharp
 
-**Admin/Auth/DB:** Auth.js v5 (next-auth), Prisma 6, @auth/prisma-adapter, PostgreSQL 16 (Docker local) → Supabase Postgres Free (500MB DB, 1GB Storage, 50k MAU), Supabase Storage (bucket `portfolio`), t3-env/zod (validação env), Upstash Redis ou Arcjet (rate-limit free) — opcional, desligado por padrão
+**Admin/Auth/DB:** Auth.js v5 (`next-auth@5.0.0-beta.32`, JWT + `maxAge` 7 dias, `pages.signIn: "/login"`), Prisma 7 (`prisma@^7.10.0` + `@prisma/client@^7.10.0` + `@prisma/adapter-pg` + `pg` + `dotenv` + `@types/pg`), PostgreSQL 16 (Docker local `portfolio-db`) → Supabase Postgres Free (500MB DB, 1GB Storage), Supabase Storage (bucket `portfolio-bucket`, `private`, policies `public SELECT/INSERT` com endurecimento futuro para `authenticated INSERT`), `zod` validação env (`SUPABASE_*` opcionais até configurar), Upstash Redis ou Arcjet (rate-limit free) — opcional, desligado por padrão
 
 **Infra:** pnpm 10, Turbo, Vercel (host), Docker Compose, ESLint 8, Prettier
 
@@ -107,29 +107,36 @@ middleware.ts
 - [x] `middleware.ts` fake (`matcher /admin/:path*` libera, login público) — pronto para trocar por Auth.js sem flash
 - [x] Componentes `admin/EmptyState` + `ui/stacking-card.tsx` + `@iconify/react` (lucide + iconify)
 
-### Fase 2 — Auth Real — CONCLUÍDA (ajustes pendentes)
-- [x] `pnpm add next-auth@beta` (v5 beta, App Router nativo)
-- [x] GitHub OAuth App criado (`portfolio`, callback `http://localhost:3000/api/auth/callback/github`), `.env.local` com `GITHUB_ID/SECRET`, `AUTH_SECRET` (`openssl rand -base64 32`), `GITHUB_ALLOWED_EMAIL`
-- [x] `lib/env.ts` (zod) + `lib/auth.ts` (GitHub provider, `authorized` só `eupablomonteiro`, `trustHost:true`)
+### Fase 2 — Auth Real — CONCLUÍDA
+- [x] `pnpm add next-auth@beta` (v5 beta `5.0.0-beta.32`, App Router nativo)
+- [x] GitHub OAuth App criado (`portfolio`, callback `http://localhost:3000/api/auth/callback/github`), `.env.local` com `GITHUB_ID/SECRET`, `AUTH_SECRET` (`openssl rand -base64 32` ou `node -e` no Windows), `GITHUB_ALLOWED_EMAIL`
+- [x] `lib/env.ts` (zod) + `lib/auth.ts` (GitHub provider, `authorized` só allowlist, `trustHost:true`, `session: { strategy:"jwt", maxAge: 7 dias }`, `pages.signIn: "/login"`)
 - [x] `app/api/auth/[...nextauth]/route.ts` (`handlers` export), `middleware.ts` (`export {auth as middleware}` + `matcher /admin/:path*`) sem flash (Edge + RSC)
-- [x] `app/login` com `Server Action signIn("github")` e `app/(admin)/layout.tsx` Server com `auth()` + `redirect("/login")` + `AdminTabs` Client
-- [ ] Ajuste: `/login` redireciona se já logado (`auth()` no `login/page.tsx` → `redirect("/admin/projects")`)
-- [ ] Anti-duplo clique: botão `disabled` + `useTransition` no front e `rate-limit/idempotency` no backend (não só frontend)
-- [ ] Configurar tempo de sessão (`session: { strategy:"jwt", maxAge: 60*60*24*7 }` em `auth.ts`)
+- [x] `app/login` com `Server Action signIn("github")`, redirect se já logado (`auth()` → `redirect("/admin/projects")` com checagem allowlist) e `app/(admin)/layout.tsx` Server com `auth()` + `redirect("/login")` + `AdminTabs` Client
+- [x] Anti-duplo clique: `SubmitButton` (`useFormStatus` + `disabled`) no front e `slug @unique` como idempotência real no backend
 
-### Fase 3 — DB + Storage (você implementa lógica)
-- [ ] `docker-compose.yml` (postgres:16-alpine) + `prisma init` + `prisma/schema.prisma` (models `Project`, `Experience`)
-- [ ] `lib/db.ts` Singleton + `repositories/*` + `services/*` + `dto/*`
-- [ ] `Supabase` projeto free + tabelas + `bucket portfolio` (private, policy authenticated)
-- [ ] `lib/supabase.ts` Factory
-- [ ] Server Actions ou Route Handlers `POST /api/admin/projects` com `auth()` + `zod` + `rate-limit` (explicar brute force)
-- [ ] Subir `ImageUpload` para Storage (`signedUrl`)
+### Fase 3 — DB + Storage — EM ANDAMENTO (ponta-a-ponta primeiro, refinamento depois)
+- [x] `docker-compose.yml` raiz (`postgres:16-alpine`, `portfolio-db`, `postgres:admin/portfolio`) — corrigido `environment`
+- [x] `prisma init` em `apps/web` (`prisma/schema.prisma` + `prisma7.config.ts`), `DATABASE_URL` em `apps/web/.env` (CLI) duplicada no `.env.local` (Next)
+- [x] Models `Project` + `Experience` (`id uuid`, `slug @unique`, `techs String[]`, `order`, `published`), `migrate dev --name init` aplicado, `generate` com `output ../src/generated/prisma`
+- [x] `lib/db.ts` Singleton + `PrismaPg` adapter (obrigatório no 7) + `lib/env.ts` (`DATABASE_URL` required, `SUPABASE_*` opcionais até configurar)
+- [x] POO `Project`: `dto/project.dto.ts` + `repositories/ProjectRepository.ts` + `services/ProjectService.ts`
+- [x] `lib/supabase.ts` Factory + `SUPABASE_BUCKET = "portfolio-bucket"` + `getSignedImageUrl`
+- [x] Supabase free criado (São Paulo): `SUPABASE_URL` = Project URL sem `/rest/v1`, `SUPABASE_ANON_KEY` = `Publishable key sb_publishable_...` (aba 1, legacy `anon eyJ...` depreciado fim/2026), bucket `portfolio-bucket` private com policies `public SELECT/INSERT`
+- [x] `components/admin/ImageUpload.tsx` (preview local, Client só no upload)
+- [x] `admin/projects` ligado em `ProjectService.list()` em RSC (mock removido)
+- [ ] POO `Experience`: `dto/experience.dto.ts` + `repositories/ExperienceRepository.ts` + `services/ExperienceService.ts` (espelhar `Project`)
+- [ ] Trocar mock `admin/experience` por `ExperienceService.list()` em RSC
+- [ ] `Actions POST` (`auth()` + `redirect` + `projectSchema.parse` + tratamento `slug` duplicado) + `rate-limit` futuro
+- [ ] `migrate deploy` no Supabase remoto (URL Direct uma vez) e envs de prod (URL Pooled 6543 + Supabase keys na Vercel)
 
-### Fase 4 — Polimento (opcional)
-- [ ] Headers `CSP/HSTS` em `next.config.js`
-- [ ] `loading.tsx` + `error.tsx` por rota admin
-- [ ] Cursor effects (site já listado: curson.io, magicui)
-- [ ] Deploy Vercel + envs
+### Fase 4 — UX avançado + Performance (DEPOIS do ponta-a-ponta, planejado agora)
+- [ ] Fallback/loading: `loading.tsx` por rota (`(admin)/admin/projects|experience`, `login`) com skeleton `animate-pulse` no formato da tabela/cards + `error.tsx` com `reset()` + `not-found.tsx` admin para slug inexistente + `Suspense` boundaries em listas
+- [ ] Lazy loading: `next/dynamic` com `ssr:false` + `loading` skeleton para `ImageUpload` e `StackingCards` (`motion` pesado); `next/image` com `sizes` + `priority` só no hero/crachá, `loading="lazy"` no resto
+- [ ] Cache: listas admin com `fetch(..., { next: { tags: ["projects","experiences"] } })` + `revalidatePath/revalidateTag` após `create`; `unstable_cache` no `Service.list()`; `loading` instantâneo no retorno
+- [ ] Performance: `next.config.js` `optimizePackageImports` (`@iconify/react`, `lucide-react`, `framer-motion`), `images.remotePatterns` só `avatars.githubusercontent.com`, `sharp` ativo; dev com `next dev --turbo`; bundle checado via `next build` (alvo `/` < 20kB First Load já atingido)
+- [ ] Segurança extra: headers `CSP/HSTS` em `next.config.js`, `rate-limit` (Upstash/Arcjet 10/min) no callback e nos `POST`, `signedUrl` com expiração curta (3600s)
+- [ ] Cursor effects (site já listado: curson.io, magicui) + Deploy Vercel + envs (`DATABASE_URL` Pooled, Supabase keys, `AUTH_SECRET`)
 
 ---
 
@@ -166,7 +173,7 @@ Cada arquivo alterado mostrará:
 
 - Free: 500MB DB, 1GB Storage, 50k MAU, pausa após 7 dias inativo (reativa)
 - Criar projeto → `Database` → `SQL Editor` → rodar `prisma migrate`
-- `Storage` → `New Bucket` → `portfolio` → `Private` → `Policies` → `Allow authenticated insert`
+- `Storage` → `New Bucket` → `portfolio-bucket` → `Private` → `Policies` → `public SELECT/INSERT` (endurecer para `authenticated INSERT` depois)
 - Local dev com Docker espelha prod; prod troca só `DATABASE_URL` para `Supabase pooled`
 
 ---
@@ -178,4 +185,4 @@ Cada arquivo alterado mostrará:
 
 ---
 
-*Última atualização: Fase 2 Auth concluída (pendente: redirect /login, anti-duplo clique, maxAge). Próximo: Fase 3 DB + Storage.*
+*Etapa atual: Fase 3 em andamento — prontos: DB local + migrate + POO Project + `admin/projects` em RSC + `ImageUpload` + Supabase `portfolio-bucket`. Faltam: POO `Experience` + wire `admin/experience` + `Actions POST` + `migrate deploy` remoto. Próximo: Fase 4 UX/performance (só após ponta-a-ponta).*

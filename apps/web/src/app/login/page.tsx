@@ -1,8 +1,13 @@
-import { signIn } from "@/lib/auth";
+import { signIn, auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
 import { Icon } from "@iconify/react";
-import { buttonVariants } from "@/components/ui";
+import { SubmitButton } from "@/components/admin/SubmitButton";
+import { env } from "@/lib/env";
 
-export default function LoginPage() {
+export default async function LoginPage() {
+  const session = await auth();
+  if (session?.user?.email === env.GITHUB_ALLOWED_EMAIL) redirect("/admin/projects");
+
   return (
     <div className="min-h-screen bg-[#0F0F0F] flex items-center justify-center p-6 relative overflow-hidden">
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#E1577333_1px,transparent_1px),linear-gradient(to_bottom,#E1577312_1px,transparent_1px)] bg-[size:48px_48px]" />
@@ -36,13 +41,7 @@ export default function LoginPage() {
           }}
           className="flex flex-col gap-3 my-4"
         >
-          <button
-            type="submit"
-            className={buttonVariants({ variant: "tertiary", size: "sm" })}
-          >
-            <Icon icon="simple-icons:github" width={18} height={18} />
-            Entrar com GitHub
-          </button>
+          <SubmitButton label="Entrar com GitHub" icon="simple-icons:github" />
         </form>
 
         <p className="mt-4 text-center font-mono text-xs text-portfolio-text-secondary">
