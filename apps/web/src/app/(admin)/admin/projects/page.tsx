@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { Icon } from "@iconify/react";
 import { ProjectService } from "@/services/ProjectService";
+import { EmptyState } from "@/components/admin/EmptyState";
 
 export default async function AdminProjectsPage() {
-
   const projects = await new ProjectService().list();
 
   return (
@@ -22,65 +22,74 @@ export default async function AdminProjectsPage() {
         </button>
       </div>
 
-      <div className="mt-6 overflow-hidden rounded-16 bg-portfolio-surface shadow-solid ring-1 ring-portfolio-border">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm">
-            <thead className="bg-portfolio-bg text-xs font-semibold text-portfolio-text-secondary">
-              <tr>
-                <th className="px-4 py-3">Projeto</th>
-                <th className="px-4 py-3">Slug</th>
-                <th className="px-4 py-3">Techs</th>
-                <th className="px-4 py-3">Status</th>
-                <th className="px-4 py-3 text-right">Ações</th>
-              </tr>
-            </thead>
-            <tbody>
-              {projects.map((p) => (
-                <tr key={p.id} className="border-t border-portfolio-border">
-                  <td className="px-4 py-3 font-medium text-portfolio-text">
-                    {p.title}
-                  </td>
-                  <td className="px-4 py-3 font-mono text-xs text-portfolio-text-secondary">
-                    {p.slug}
-                  </td>
-                  <td className="px-4 py-3">
-                    <span className="inline-flex flex-wrap gap-1">
-                      {p.techs.map((t) => (
-                        <span
-                          key={t}
-                          className="rounded-full bg-portfolio-bg px-2 py-1 text-xs ring-1 ring-portfolio-border"
-                        >
-                          {t}
-                        </span>
-                      ))}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3">
-                    <span
-                      className={`rounded-full px-2 py-1 text-xs font-semibold ring-1 ${p.published ? "bg-emerald-500/10 text-emerald-700 ring-emerald-500/20" : "bg-portfolio-bg text-portfolio-text-secondary ring-portfolio-border"}`}
-                    >
-                      {p.published ? "publicado" : "rascunho"}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 text-right">
-                    <span className="inline-flex gap-2">
-                      <Link
-                        href="#"
-                        className="rounded-12 bg-portfolio-bg px-3 py-1.5 text-xs font-semibold ring-1 ring-portfolio-border hover:bg-portfolio-surface"
-                      >
-                        Editar
-                      </Link>
-                      <button className="rounded-12 bg-portfolio-text px-3 py-1.5 text-xs font-semibold text-white">
-                        Arquivar
-                      </button>
-                    </span>
-                  </td>
+      {projects.length ? (
+        <div className="mt-6 overflow-hidden rounded-16 bg-portfolio-surface shadow-solid ring-1 ring-portfolio-border">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-sm">
+              <thead className="bg-portfolio-bg text-xs font-semibold text-portfolio-text-secondary">
+                <tr>
+                  <th className="px-4 py-3">Projeto</th>
+                  <th className="px-4 py-3">Slug</th>
+                  <th className="px-4 py-3">Techs</th>
+                  <th className="px-4 py-3">Status</th>
+                  <th className="px-4 py-3 text-right">Ações</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {projects.map((p) => (
+                  <tr key={p.id} className="border-t border-portfolio-border">
+                    <td className="px-4 py-3 font-medium text-portfolio-text">
+                      {p.title}
+                    </td>
+                    <td className="px-4 py-3 font-mono text-xs text-portfolio-text-secondary">
+                      {p.slug}
+                    </td>
+                    <td className="px-4 py-3">
+                      <span className="inline-flex flex-wrap gap-1">
+                        {p.techs.map((t) => (
+                          <span
+                            key={t}
+                            className="rounded-full bg-portfolio-bg px-2 py-1 text-xs ring-1 ring-portfolio-border"
+                          >
+                            {t}
+                          </span>
+                        ))}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3">
+                      <span
+                        className={`rounded-full px-2 py-1 text-xs font-semibold ring-1 ${p.published ? "bg-emerald-500/10 text-emerald-700 ring-emerald-500/20" : "bg-portfolio-bg text-portfolio-text-secondary ring-portfolio-border"}`}
+                      >
+                        {p.published ? "publicado" : "rascunho"}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3 text-right">
+                      <span className="inline-flex gap-2">
+                        <Link
+                          href="#"
+                          className="rounded-12 bg-portfolio-bg px-3 py-1.5 text-xs font-semibold ring-1 ring-portfolio-border hover:bg-portfolio-surface"
+                        >
+                          Editar
+                        </Link>
+                        <button className="rounded-12 bg-portfolio-text px-3 py-1.5 text-xs font-semibold text-white">
+                          Arquivar
+                        </button>
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="mt-6">
+          <EmptyState
+            title="Sem projetos"
+            description="Cadastre o primeiro projeto em destaque."
+          />
+        </div>
+      )}
     </div>
   );
 }

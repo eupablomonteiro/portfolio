@@ -41,8 +41,8 @@
 |---|---|---|
 | **Singleton** | `lib/db.ts` (`globalThis.prisma = new PrismaClient()`) | Evita múltiplas conexões em dev HMR |
 | **Repository** | `repositories/ProjectRepository.ts`, `ExperienceRepository.ts` | Abstrai Prisma, troca para Supabase sem tocar app |
-| **Service Layer** | `services/ProjectService.ts` | Regras (slug, order, published, validação) |
-| **DTO + Zod** | `dto/project.dto.ts`, `lib/validators.ts` | Contrato tipado entrada/saída |
+| **Service Layer** | `services/ProjectService.ts`, `services/ExperienceService.ts` | Regras (slug, order, published, validação) |
+| **DTO + Zod** | `dto/project.dto.ts`, `dto/experience.dto.ts` | Contrato tipado entrada/saída |
 | **Adapter** | `auth.ts` (GitHub → Auth.js), `lib/supabase.ts` (Storage) | Adapta libs externas |
 | **Factory** | `lib/supabase.ts` `createSupabaseClient()` | Cria client com env validado |
 | **Dependency Inversion** | `app/(admin)/projects/page.tsx` importa `ProjectService`, não `Prisma` | Inverte dependência |
@@ -125,10 +125,11 @@ middleware.ts
 - [x] Supabase free criado (São Paulo): `SUPABASE_URL` = Project URL sem `/rest/v1`, `SUPABASE_ANON_KEY` = `Publishable key sb_publishable_...` (aba 1, legacy `anon eyJ...` depreciado fim/2026), bucket `portfolio-bucket` private com policies `public SELECT/INSERT`
 - [x] `components/admin/ImageUpload.tsx` (preview local, Client só no upload)
 - [x] `admin/projects` ligado em `ProjectService.list()` em RSC (mock removido)
-- [ ] POO `Experience`: `dto/experience.dto.ts` + `repositories/ExperienceRepository.ts` + `services/ExperienceService.ts` (espelhar `Project`)
-- [ ] Trocar mock `admin/experience` por `ExperienceService.list()` em RSC
-- [ ] `Actions POST` (`auth()` + `redirect` + `projectSchema.parse` + tratamento `slug` duplicado) + `rate-limit` futuro
-- [ ] `migrate deploy` no Supabase remoto (URL Direct uma vez) e envs de prod (URL Pooled 6543 + Supabase keys na Vercel)
+ - [x] POO `Experience`: `dto/experience.dto.ts` + `repositories/ExperienceRepository.ts` + `services/ExperienceService.ts` (espelhado em `Project`: `z.coerce` p/ `FormData`, `IRepository` tipado Prisma, `Service.create` em 2 passos)
+ - [x] `admin/experience` em `ExperienceService.list()` em RSC com `EmptyState` inline (header sempre visível) — mesmo padrão aplicado em `admin/projects`
+ - [x] Padronização `Project ≡ Experience`: `slug` single-line + msg `Slug inválido`, `techs` com `min(1)` interno, `order` `z.coerce.number().int().min(0)`, `EmptyState` inline nos dois
+ - [x] `Actions POST` colocadas (`admin/projects/actions.ts` → `createProject`, `admin/experience/actions.ts` → `createExperience`): `auth()` + allowlist, `csv()` p/ `techs/bullets`, `Service.create`, `P2002` → `Slug já existe`, `revalidatePath` + `ActionResult {ok|error}` — `rate-limit` fica Fase 4
+ - [ ] `migrate deploy` no Supabase remoto (URL Direct uma vez) e envs de prod (URL Pooled 6543 + Supabase keys na Vercel)
 
 ### Fase 4 — UX avançado + Performance (DEPOIS do ponta-a-ponta, planejado agora)
 - [ ] Fallback/loading: `loading.tsx` por rota (`(admin)/admin/projects|experience`, `login`) com skeleton `animate-pulse` no formato da tabela/cards + `error.tsx` com `reset()` + `not-found.tsx` admin para slug inexistente + `Suspense` boundaries em listas
@@ -185,4 +186,4 @@ Cada arquivo alterado mostrará:
 
 ---
 
-*Etapa atual: Fase 3 em andamento — prontos: DB local + migrate + POO Project + `admin/projects` em RSC + `ImageUpload` + Supabase `portfolio-bucket`. Faltam: POO `Experience` + wire `admin/experience` + `Actions POST` + `migrate deploy` remoto. Próximo: Fase 4 UX/performance (só após ponta-a-ponta).*
+*Etapa atual: Fase 3 em finalização — prontos: DB local + migrate + POO Project + POO Experience + `admin/projects` e `admin/experience` em RSC com `EmptyState` inline + `Actions POST` (`createProject`/`createExperience` com `P2002` tratado). Falta só: `migrate deploy` remoto + envs prod. Próximo: Fase 4 UX/performance (só após ponta-a-ponta).*
