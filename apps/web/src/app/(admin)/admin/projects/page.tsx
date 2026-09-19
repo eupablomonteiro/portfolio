@@ -1,10 +1,16 @@
-import Link from "next/link";
-import { Icon } from "@iconify/react";
 import { ProjectService } from "@/services/ProjectService";
+import { ExperienceService } from "@/services/ExperienceService";
 import { EmptyState } from "@/components/admin/EmptyState";
+import { CreateProjectButton, ProjectRowActions } from "@/components/admin/ProjectDialogs";
 
 export default async function AdminProjectsPage() {
-  const projects = await new ProjectService().list();
+  const service = new ProjectService();
+  const [projects, projectTechs, experienceTechs] = await Promise.all([
+    service.list(),
+    service.listTechs(),
+    new ExperienceService().listTechs(),
+  ]);
+  const techSuggestions = [...new Set([...projectTechs, ...experienceTechs])];
 
   return (
     <div className="mx-auto max-w-[1100px]">
@@ -17,9 +23,7 @@ export default async function AdminProjectsPage() {
             Gerencie projetos em destaque.
           </p>
         </div>
-        <button className="inline-flex items-center gap-2 rounded-12 bg-portfolio-primary px-4 py-2.5 text-sm font-semibold text-white shadow-solid hover:bg-portfolio-primary-hover">
-          <Icon icon="lucide:plus" width={16} height={16} /> Novo projeto
-        </button>
+        <CreateProjectButton suggestions={techSuggestions} />
       </div>
 
       {projects.length ? (
@@ -64,17 +68,7 @@ export default async function AdminProjectsPage() {
                       </span>
                     </td>
                     <td className="px-4 py-3 text-right">
-                      <span className="inline-flex gap-2">
-                        <Link
-                          href="#"
-                          className="rounded-12 bg-portfolio-bg px-3 py-1.5 text-xs font-semibold ring-1 ring-portfolio-border hover:bg-portfolio-surface"
-                        >
-                          Editar
-                        </Link>
-                        <button className="rounded-12 bg-portfolio-text px-3 py-1.5 text-xs font-semibold text-white">
-                          Arquivar
-                        </button>
-                      </span>
+                      <ProjectRowActions row={p} suggestions={techSuggestions} />
                     </td>
                   </tr>
                 ))}

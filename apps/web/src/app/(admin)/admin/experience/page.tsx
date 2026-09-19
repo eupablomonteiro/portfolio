@@ -1,9 +1,16 @@
-import { Icon } from "@iconify/react";
 import { ExperienceService } from "@/services/ExperienceService";
+import { ProjectService } from "@/services/ProjectService";
 import { EmptyState } from "@/components/admin/EmptyState";
+import { CreateExperienceButton, ExperienceRowActions } from "@/components/admin/ExperienceDialogs";
 
 export default async function AdminExperiencePage() {
-  const experiences = await new ExperienceService().list();
+  const service = new ExperienceService();
+  const [experiences, experienceTechs, projectTechs] = await Promise.all([
+    service.list(),
+    service.listTechs(),
+    new ProjectService().listTechs(),
+  ]);
+  const techSuggestions = [...new Set([...experienceTechs, ...projectTechs])];
 
   return (
     <div className="mx-auto max-w-[1100px]">
@@ -16,9 +23,7 @@ export default async function AdminExperiencePage() {
             Gerencie trajetória profissional.
           </p>
         </div>
-        <button className="inline-flex items-center gap-2 rounded-12 bg-portfolio-primary px-4 py-2.5 text-sm font-semibold text-white shadow-solid hover:bg-portfolio-primary-hover">
-          <Icon icon="lucide:plus" width={16} height={16} /> Nova experiência
-        </button>
+        <CreateExperienceButton suggestions={techSuggestions} />
       </div>
 
       {experiences.length ? (
@@ -37,14 +42,7 @@ export default async function AdminExperiencePage() {
                     {e.role} • {e.period}
                   </p>
                 </div>
-                <span className="flex gap-2">
-                  <button className="rounded-12 bg-portfolio-bg px-3 py-1.5 text-xs font-semibold ring-1 ring-portfolio-border">
-                    Editar
-                  </button>
-                  <button className="rounded-12 bg-portfolio-text px-3 py-1.5 text-xs font-semibold text-white">
-                    Arquivar
-                  </button>
-                </span>
+                <ExperienceRowActions row={e} suggestions={techSuggestions} />
               </div>
               <div className="mt-3 flex flex-wrap gap-1.5">
                 {e.techs.map((t) => (
