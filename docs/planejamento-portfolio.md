@@ -129,6 +129,12 @@ middleware.ts
  - [x] `admin/experience` em `ExperienceService.list()` em RSC com `EmptyState` inline (header sempre visível) — mesmo padrão aplicado em `admin/projects`
  - [x] Padronização `Project ≡ Experience`: `slug` single-line + msg `Slug inválido`, `techs` com `min(1)` interno, `order` `z.coerce.number().int().min(0)`, `EmptyState` inline nos dois
  - [x] `Actions POST` colocadas (`admin/projects/actions.ts` → `createProject`, `admin/experience/actions.ts` → `createExperience`): `auth()` + allowlist, `csv()` p/ `techs/bullets`, `Service.create`, `P2002` → `Slug já existe`, `revalidatePath` + `ActionResult {ok|error}` — `rate-limit` fica Fase 4
+ - [x] CRUD completo admin: `update/delete` em DTO (`updateSchema` slug imutável) + Repo (`findById/update/remove`) + Service (`update/archive/remove`, `archive` = `published:false` só Project) + Actions (`update/archive/delete`, `P2025` → `Registro não encontrado`); `csv/bool` centralizados em `lib/utils.ts`
+ - [x] Modals admin (`Modal` `<dialog>` nativo + `FormField` + `ProjectForm`/`ExperienceForm` + `ConfirmDelete` com digitação do slug + `ProjectDialogs`/`ExperienceDialogs`): pages RSC, JS client só nas ilhas, paleta `portfolio-*`
+ - [x] `loading.tsx` skeleton por rota admin (tabela/cards, `animate-pulse`) + `error.tsx` com `reset()` + `(public)/loading.tsx` (hero + seções) — `not-found`/`Suspense` fino ficam Fase 4 (Suspense em seções com `useScroll` quebra ref do motion, dados resolvidos na page)
+ - [x] Imagens: PNGs 2000px+ (~9MB) → webp redimensionado (hero 800px/110KB, crachá 720px/89KB, logo 160px/11KB) + `quality 80` + `blur` + crachá sem `priority` (abaixo da dobra) + `loading lazy` em `<img>` remoto
+ - [x] Fontes via `next/font/google` (`lib/fonts.ts`, `display:swap`, subsets latin) — removido `@import` bloqueante do CSS
+ - [x] Home ligada ao banco: `findPublished/listPublished` + `ProjectsFeed`/`ExperienceFeed` RSC + header sempre visível com fallback quando vazio + `revalidate 60` + `revalidatePath("/")` nas mutations — dev com `--turbo`
  - [ ] `migrate deploy` no Supabase remoto (URL Direct uma vez) e envs de prod (URL Pooled 6543 + Supabase keys na Vercel)
 
 ### Fase 4 — UX avançado + Performance (DEPOIS do ponta-a-ponta, planejado agora)

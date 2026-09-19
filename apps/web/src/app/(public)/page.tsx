@@ -1,16 +1,18 @@
 import { Hero } from "@/sections/hero";
 import { Technologies } from "@/sections/technologies";
-import { Projects } from "@/sections/projects";
-import { Experience } from "@/sections/experience";
+import { ExperienceFeed } from "@/sections/experience-feed";
+import { ProjectsFeed } from "@/sections/projects-feed";
 import { Contact } from "@/sections/contact";
+
+export const revalidate = 60;
 
 export default function Home() {
   return (
     <main>
       <Hero />
       <Technologies />
-      <Experience />
-      <Projects />
+      <ExperienceFeed />
+      <ProjectsFeed />
       <Contact />
     </main>
   );

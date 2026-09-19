@@ -59,7 +59,7 @@ export const StackingCard = ({ i, project, progress, range, targetScale }: CardP
                     {project.screenshot ? (
                       <Image src={project.screenshot} alt={project.title} fill className="object-cover" />
                     ) : project.imageUrl ? (
-                      <img src={project.imageUrl} alt={project.title} className="absolute inset-0 w-full h-full object-cover" />
+                      <img src={project.imageUrl} alt={project.title} loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover" />
                     ) : (
                       <div className="absolute inset-0 grid place-items-center bg-portfolio-bg">
                         <span className="font-mono text-xs text-portfolio-text-secondary">sem imagem</span>
@@ -136,10 +136,19 @@ export function StackingCards({ projects }: { projects: StackingProject[] }) {
         </div>
 
         <div className="flex flex-col">
-          {projects.map((project, i) => {
-            const targetScale = 1 - (projects.length - i) * 0.04;
-            return <StackingCard key={`${project.title}_${i}`} i={i} project={project} progress={scrollYProgress} range={[i * 0.22, 1]} targetScale={targetScale} />;
-          })}
+          {projects.length === 0 ? (
+            <div className="mx-auto w-[92%] max-w-[1100px] rounded-16 border border-dashed border-portfolio-border bg-portfolio-surface p-10 text-center">
+              <p className="font-heading font-bold text-portfolio-text">Novos projetos a caminho</p>
+              <p className="mt-1 text-sm text-portfolio-text-secondary">
+                Em breve esta vitrine estará atualizada com os trabalhos mais recentes.
+              </p>
+            </div>
+          ) : (
+            projects.map((project, i) => {
+              const targetScale = 1 - (projects.length - i) * 0.04;
+              return <StackingCard key={`${project.title}_${i}`} i={i} project={project} progress={scrollYProgress} range={[i * 0.22, 1]} targetScale={targetScale} />;
+            })
+          )}
         </div>
 
         <div className="h-[10vh] bg-portfolio-bg" />

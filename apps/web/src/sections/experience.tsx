@@ -5,7 +5,7 @@ import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import { BadgeComments } from "@/components/badgeComments";
 import { Text } from "@/components/ui";
 import { GraphicLine, GraphicStar } from "@/components/graphics";
-interface Experience {
+export interface ExperienceItem {
   company: string;
   role: string;
   period: string;
@@ -15,50 +15,11 @@ interface Experience {
   accent: "primary" | "green" | "gold";
 }
 
-const experiences: Experience[] = [
-  {
-    company: "Freelance — E-commerce Platform",
-    role: "Desenvolvedor Fullstack",
-    period: "2023 — Presente",
-    location: "Remoto",
-    accent: "primary",
-    bullets: [
-      "Construí loja completa com catálogo, carrinho e checkout Stripe processando vendas reais",
-      "Reduzi tempo de carregamento em 40% com renderização híbrida Next.js e otimização de imagens",
-      "Implementei painel administrativo com controle de estoque e relatórios",
-    ],
-    techs: ["Next.js", "TypeScript", "Prisma", "PostgreSQL", "Stripe"],
-  },
-  {
-    company: "Freelance — Dashboard Analytics",
-    role: "Desenvolvedor Frontend",
-    period: "2022 — 2023",
-    location: "Remoto",
-    accent: "green",
-    bullets: [
-      "Desenvolvi painel de métricas com gráficos interativos e filtros avançados",
-      "Integrei exportação de relatórios em PDF/CSV consumida por 200+ usuários",
-      "Padronizei componentes e reduzi retrabalho em novas telas",
-    ],
-    techs: ["React", "TypeScript", "Recharts", "Node.js"],
-  },
-  {
-    company: "Projetos Autorais",
-    role: "Desenvolvedor Fullstack Júnior",
-    period: "2021 — 2022",
-    location: "São Paulo, BR",
-    accent: "gold",
-    bullets: [
-      "Criei APIs RESTful com autenticação JWT, Swagger e testes automatizados",
-      "Evoluí projetos pessoais aplicando boas práticas de código limpo e Git",
-    ],
-    techs: ["Node.js", "Express", "PostgreSQL", "Docker"],
-  },
-];
+const ACCENTS = ["primary", "green", "gold"] as const;
 
 
 
-export function Experience() {
+export function Experience({ experiences }: { experiences: ExperienceItem[] }) {
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -89,6 +50,14 @@ export function Experience() {
           </Text>
         </motion.div>
 
+        {experiences.length === 0 ? (
+          <div className="rounded-16 border border-dashed border-portfolio-border bg-portfolio-surface p-10 text-center">
+            <p className="font-heading font-bold text-portfolio-text">Novas experiências a caminho</p>
+            <p className="mt-1 text-sm text-portfolio-text-secondary">
+              Em breve esta trajetória estará atualizada com os trabalhos mais recentes.
+            </p>
+          </div>
+        ) : (
         <div className="relative">
           <div className="absolute left-[18px] top-0 bottom-0 w-[2px] bg-portfolio-border md:left-[20px]" />
           <motion.div style={{ scaleY, transformOrigin: "top" }} className="absolute left-[18px] top-0 bottom-0 w-[2px] bg-gradient-to-b from-portfolio-primary via-portfolio-green to-portfolio-gold md:left-[20px]" />
@@ -136,6 +105,7 @@ export function Experience() {
             );
           })}
         </div>
+        )}
       </div>
     </section>
   );

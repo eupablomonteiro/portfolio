@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { fontBody, fontHeading, fontMono } from "@/lib/fonts";
 
 export const metadata: Metadata = {
   title: "Pablo Monteiro — Desenvolvedor Full Stack",
@@ -13,7 +14,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="pt-BR">
+    <html
+      lang="pt-BR"
+      className={`${fontHeading.variable} ${fontBody.variable} ${fontMono.variable}`}
+    >
       <body className="antialiased">{children}</body>
     </html>
   );

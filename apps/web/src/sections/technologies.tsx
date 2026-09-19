@@ -155,49 +155,49 @@ export function Technologies() {
                 ring: "ring-portfolio-primary/20",
                 text: "text-portfolio-primary",
                 soft: "bg-portfolio-primary/10",
-                glow: "bg-portfolio-primary",
+                glow: "radial-gradient(circle, rgba(225,87,115,0.10), transparent 70%)",
               },
               green: {
                 bg: "bg-portfolio-green",
                 ring: "ring-portfolio-green/20",
                 text: "text-portfolio-green",
                 soft: "bg-portfolio-green/15",
-                glow: "bg-portfolio-green",
+                glow: "radial-gradient(circle, rgba(140,156,138,0.12), transparent 70%)",
               },
               gold: {
                 bg: "bg-portfolio-gold",
                 ring: "ring-portfolio-gold/20",
                 text: "text-portfolio-gold",
                 soft: "bg-portfolio-gold/20",
-                glow: "bg-portfolio-gold",
+                glow: "radial-gradient(circle, rgba(214,183,107,0.14), transparent 70%)",
               },
               primaryDark: {
                 bg: "bg-portfolio-primary-dark",
                 ring: "ring-portfolio-primary-dark/20",
                 text: "text-portfolio-primary-dark",
                 soft: "bg-portfolio-primary-dark/10",
-                glow: "bg-portfolio-primary-dark",
+                glow: "radial-gradient(circle, rgba(126,39,56,0.10), transparent 70%)",
               },
               text: {
                 bg: "bg-portfolio-text",
                 ring: "ring-portfolio-text/10",
                 text: "text-portfolio-text",
                 soft: "bg-portfolio-text/5",
-                glow: "bg-portfolio-text",
+                glow: "radial-gradient(circle, rgba(35,35,35,0.07), transparent 70%)",
               },
               warning: {
                 bg: "bg-portfolio-warning",
                 ring: "ring-portfolio-warning/20",
                 text: "text-portfolio-warning",
                 soft: "bg-portfolio-warning/15",
-                glow: "bg-portfolio-warning",
+                glow: "radial-gradient(circle, rgba(217,164,65,0.14), transparent 70%)",
               },
               surface: {
                 bg: "bg-portfolio-text",
                 ring: "ring-portfolio-text/10",
                 text: "text-portfolio-text",
                 soft: "bg-portfolio-bg",
-                glow: "bg-portfolio-text",
+                glow: "radial-gradient(circle, rgba(35,35,35,0.06), transparent 70%)",
               },
             }[group.accent];
 
@@ -223,7 +223,8 @@ export function Technologies() {
                 className={`group relative flex flex-col overflow-hidden rounded-16 bg-portfolio-surface p-6 shadow-solid ring-1 ring-portfolio-border transition-all duration-300 hover:shadow-solid-lg hover:-translate-y-1 hover:ring-portfolio-text/10 md:p-7 ${colSpan} ${isBase ? "md:flex-row md:items-center md:gap-8" : ""}`}
               >
                 <div
-                  className={`pointer-events-none absolute h-64 w-64 rounded-full blur-3xl opacity-[0.07] transition-opacity duration-300 group-hover:opacity-[0.18] ${spotlightPos[idx]} ${accentMap.glow}`}
+                  style={{ background: accentMap.glow }}
+                  className={`pointer-events-none absolute h-64 w-64 rounded-full opacity-70 transition-opacity duration-300 group-hover:opacity-100 ${spotlightPos[idx]}`}
                 />
 
                 <div className={isBase ? "md:w-[320px] shrink-0" : ""}>

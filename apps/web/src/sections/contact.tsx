@@ -31,12 +31,12 @@ export function Contact() {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
-  const rotateX = useSpring(useTransform(mouseY, [-250, 250], [6, -6]), { stiffness: 90, damping: 18 });
-  const rotateY = useSpring(useTransform(mouseX, [-250, 250], [-8, 8]), { stiffness: 90, damping: 18 });
+  const rotateX = useSpring(useTransform(mouseY, [-250, 250], [6, -6]), { stiffness: 80, damping: 18 });
+  const rotateY = useSpring(useTransform(mouseX, [-250, 250], [-8, 8]), { stiffness: 80, damping: 18 });
   const transX = useSpring(useTransform(mouseX, [-250, 250], [-10, 10]), { stiffness: 100, damping: 20 });
   const transY = useSpring(useTransform(mouseY, [-250, 250], [-8, 8]), { stiffness: 100, damping: 20 });
-  const glowX = useTransform(mouseX, [-250, 250], ["30%", "70%"]);
-  const glowY = useTransform(mouseY, [-250, 250], ["30%", "70%"]);
+  const glowX = useTransform(transX, [-10, 10], [-70, 70]);
+  const glowY = useTransform(transY, [-8, 8], [-50, 50]);
 
   const handleMouseMove = (e: React.MouseEvent) => {
     const rect = sectionRef.current?.getBoundingClientRect();
@@ -126,7 +126,14 @@ export function Contact() {
                 className="relative"
                 style={{ transformStyle: "preserve-3d" }}
               >
-                <div className="absolute -inset-8 -z-10 rounded-[32px] bg-gradient-to-br from-portfolio-primary/20 via-portfolio-gold/15 to-portfolio-green/15 blur-2xl" />
+                <div
+                  className="absolute -inset-8 -z-10 rounded-[32px]"
+                  style={{
+                    background:
+                      "radial-gradient(60% 50% at 50% 40%, rgba(225,87,115,0.16), transparent 70%), radial-gradient(50% 45% at 60% 65%, rgba(214,183,107,0.12), transparent 70%), radial-gradient(45% 40% at 40% 70%, rgba(140,156,138,0.12), transparent 70%)",
+                  }}
+                  aria-hidden="true"
+                />
                 <div className="absolute -inset-8 rotate-[8deg] rounded-[22px] bg-portfolio-primary/12" aria-hidden="true" />
                 <div className="absolute -inset-8 -rotate-[10deg] rounded-[22px] bg-portfolio-gold/12" aria-hidden="true" />
 
@@ -134,20 +141,31 @@ export function Contact() {
                   <Image
                     src={PabloCracha}
                     alt="Crachá Pablo Monteiro - Desenvolvedor Fullstack"
-                    width={560}
-                    height={820}
-                    priority
+                    width={1944}
+                    height={3607}
+                    loading="lazy"
                     quality={100}
-                    className="relative z-10 h-auto w-[300px] sm:w-[340px] lg:w-[380px] object-contain drop-shadow-[0_20px_40px_rgba(35,35,35,0.22)] select-none"
+                    sizes="(min-width: 1024px) 380px, (min-width: 640px) 340px, 300px"
+                    className="relative z-10 h-auto w-[300px] sm:w-[340px] lg:w-[380px] object-contain select-none"
                     style={{ transform: "translateZ(24px)" }}
                   />
                   <motion.div
-                    style={{ left: glowX, top: glowY } as unknown as React.CSSProperties}
-                    className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 h-40 w-40 rounded-full bg-portfolio-primary/10 blur-2xl z-0"
-                  />
+                    style={{ x: glowX, y: glowY } as unknown as React.CSSProperties}
+                    className="pointer-events-none absolute left-1/2 top-1/2 -ml-20 -mt-20 h-40 w-40 rounded-full z-0"
+                  >
+                    <div
+                      className="h-full w-full rounded-full"
+                      style={{ background: "radial-gradient(circle, rgba(225,87,115,0.14), transparent 70%)" }}
+                      aria-hidden="true"
+                    />
+                  </motion.div>
                 </div>
 
-                <div className="pointer-events-none absolute -bottom-6 left-1/2 h-6 w-[65%] -translate-x-1/2 rounded-full bg-portfolio-text/10 blur-xl" style={{ transform: "translateZ(-10px)" }} />
+                <div
+                  className="pointer-events-none absolute -bottom-6 left-1/2 h-6 w-[65%] -translate-x-1/2 rounded-full"
+                  style={{ background: "radial-gradient(50% 50% at 50% 50%, rgba(35,35,35,0.16), transparent 70%)" }}
+                  aria-hidden="true"
+                />
               </motion.div>
             </motion.div>
 

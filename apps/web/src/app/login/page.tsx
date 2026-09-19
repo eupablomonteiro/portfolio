@@ -41,7 +41,7 @@ export default async function LoginPage() {
           }}
           className="flex flex-col gap-3 my-4"
         >
-          <SubmitButton label="Entrar com GitHub" icon="simple-icons:github" />
+          <SubmitButton label="Entrar com GitHub" icon="simple-icons:github" variant="tertiary" />
         </form>
 
         <p className="mt-4 text-center font-mono text-xs text-portfolio-text-secondary">
