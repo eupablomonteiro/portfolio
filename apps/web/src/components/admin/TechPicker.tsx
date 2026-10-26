@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Icon } from "@iconify/react";
+import { Icon } from "@/components/ui/icon";
 import { TECH_OPTIONS } from "@/lib/tech-options";
 
 export function TechPicker({

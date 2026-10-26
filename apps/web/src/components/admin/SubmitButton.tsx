@@ -1,7 +1,7 @@
 "use client";
 
 import { useFormStatus } from "react-dom";
-import { Icon } from "@iconify/react";
+import { Icon } from "@/components/ui/icon";
 import { buttonVariants } from "@/components/ui";
 import type { VariantProps } from "class-variance-authority";
 

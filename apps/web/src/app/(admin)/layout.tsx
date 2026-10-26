@@ -1,7 +1,8 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import Image from "next/image";
 import { AdminTabs } from "@/components/admin/AdminTabs";
-import { Icon } from "@iconify/react";
+import { Icon } from "@/components/ui/icon";
 
 export default async function AdminLayout({ children }: {children: React.ReactNode}){
   const session = await auth();
@@ -19,7 +20,7 @@ export default async function AdminLayout({ children }: {children: React.ReactNo
         </div>
         <div className="flex gap-1 px-3 pt-3 bg-portfolio-bg border-b border-portfolio-border">
           <AdminTabs />
-          <div className="ml-auto hidden md:flex items-center gap-2 pb-2"><img src={session.user?.image ?? "https://avatars.githubusercontent.com/u/00000000?v=4"} alt="avatar" className="h-6 w-6 rounded-full"/><span className="text-xs font-medium text-portfolio-text-secondary">{session.user?.name ?? "eupablomonteiro"}</span></div>
+          <div className="ml-auto hidden md:flex items-center gap-2 pb-2"><Image src={session.user?.image ?? "https://avatars.githubusercontent.com/u/00000000?v=4"} alt="avatar" width={24} height={24} className="h-6 w-6 rounded-full"/><span className="text-xs font-medium text-portfolio-text-secondary">{session.user?.name ?? "eupablomonteiro"}</span></div>
         </div>
         <div className="flex-1 overflow-auto p-6 md:p-7 bg-portfolio-surface">{children}</div>
       </div>

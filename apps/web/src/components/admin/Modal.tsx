@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { Icon } from "@iconify/react";
+import { Icon } from "@/components/ui/icon";
 
 export function Modal({
   open,
@@ -44,9 +44,9 @@ export function Modal({
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
-      className="m-auto w-[min(600px,92vw)] rounded-16 bg-portfolio-surface p-0 shadow-solid-lg ring-1 ring-portfolio-border backdrop:bg-black/60"
+      className="m-auto max-h-[calc(100dvh-2rem)] w-[min(880px,92vw)] flex-col overflow-hidden rounded-16 bg-portfolio-surface p-0 shadow-solid-lg ring-1 ring-portfolio-border backdrop:bg-black/60 open:flex"
     >
-      <div className="flex items-start justify-between gap-4 border-b border-portfolio-border bg-portfolio-bg/60 px-5 py-4">
+      <div className="flex shrink-0 items-start justify-between gap-4 border-b border-portfolio-border bg-portfolio-bg/60 px-5 py-4">
         <div>
           <h2 className="font-heading text-lg font-bold text-portfolio-text">{title}</h2>
           {description ? (
@@ -62,7 +62,7 @@ export function Modal({
           <Icon icon="lucide:x" width={16} height={16} />
         </button>
       </div>
-      <div className="max-h-[70vh] overflow-y-auto p-5">{children}</div>
+      <div className="min-h-0 flex-1 overflow-y-auto p-5">{children}</div>
     </dialog>
   );
 }

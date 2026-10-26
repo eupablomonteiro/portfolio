@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Icon } from "@iconify/react";
+import { Icon } from "@/components/ui/icon";
 import { Modal } from "@/components/admin/Modal";
 import { ProjectForm } from "@/components/admin/ProjectForm";
 import { ConfirmDelete } from "@/components/admin/ConfirmDelete";
@@ -36,7 +36,7 @@ export function CreateProjectButton({ suggestions = [] }: { suggestions?: string
   );
 }
 
-export function ProjectRowActions({ row, suggestions = [] }: { row: Project; suggestions?: string[] }) {
+export function ProjectRowActions({ row, suggestions = [], coverUrls }: { row: Project; suggestions?: string[]; coverUrls?: { desktopGallery?: string[]; mobileGallery?: string[] } }) {
   const [modal, setModal] = useState<"edit" | "archive" | "delete" | null>(null);
   const close = () => setModal(null);
 
@@ -70,7 +70,7 @@ export function ProjectRowActions({ row, suggestions = [] }: { row: Project; sug
       </span>
 
       <Modal open={modal === "edit"} onClose={close} title={`Editar — ${row.title}`} description="Slug não pode ser alterado.">
-        <ProjectForm mode="edit" initial={row} suggestions={suggestions} action={updateProject as Action} onDone={close} />
+        <ProjectForm mode="edit" initial={row} suggestions={suggestions} coverUrls={coverUrls} action={updateProject as Action} onDone={close} />
       </Modal>
 
       <Modal open={modal === "archive"} onClose={close} title={`Arquivar — ${row.title}`} description="O projeto sai do ar e vira rascunho. Reversível na edição.">

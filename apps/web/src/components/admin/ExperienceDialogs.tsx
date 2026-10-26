@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Icon } from "@iconify/react";
+import { Icon } from "@/components/ui/icon";
 import { Modal } from "@/components/admin/Modal";
 import { ExperienceForm } from "@/components/admin/ExperienceForm";
 import { ConfirmDelete } from "@/components/admin/ConfirmDelete";

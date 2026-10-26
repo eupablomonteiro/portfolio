@@ -1,26 +1,31 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { Prisma } from "@/generated/prisma/client";
 import { auth } from "@/lib/auth";
 import { env } from "@/lib/env";
 import { ExperienceService } from "@/services/ExperienceService";
 import { csv } from "@/lib/utils";
+import { toActionError } from "@/lib/action-error";
 
 export type ActionResult = { ok: true } | { ok: false; error: string };
+
+function revalidateExperiences() {
+  revalidatePath("/admin/experience");
+  revalidatePath("/");
+}
 
 export async function createExperience(formData: FormData): Promise<ActionResult> {
   const session = await auth();
 
-  if (session?.user?.email !== env.GITHUB_ALLOWED_EMAIL) return { ok: false, error: "Não autorizado" };
+  if (session?.user?.email !== env.GITHUB_ALLOWED_EMAIL) return { ok: false, error: "Experiências > criar: não autorizado" };
 
   const raw = {
-    slug: String(formData.get("slug") ?? ""),
+slug: String(formData.get("slug") ?? ""),
     company: String(formData.get("company") ?? ""),
     role: String(formData.get("role") ?? ""),
     period: String(formData.get("period") ?? ""),
     location: String(formData.get("location") ?? ""),
-    bullets: csv(formData.get("bullets")),
+    description: String(formData.get("description") ?? ""),
     techs: csv(formData.get("techs")),
     order: String(formData.get("order") ?? "0"),
   };
@@ -28,51 +33,44 @@ export async function createExperience(formData: FormData): Promise<ActionResult
   try {
     await new ExperienceService().create(raw);
   } catch (e) {
-    if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === "P2002")
-      return { ok: false, error: "Slug já existe" };
-    return { ok: false, error: "Dados inválidos" };
+    return { ok: false, error: toActionError(e, "Experiências > criar") };
   }
 
-  revalidatePath("/admin/experience");
-  revalidatePath("/");
+  revalidateExperiences();
   return { ok: true };
 }
 
 export async function updateExperience(formData: FormData): Promise<ActionResult> {
   const session = await auth();
-  if (session?.user?.email !== env.GITHUB_ALLOWED_EMAIL) return { ok: false, error: "Não autorizado" };
+  if (session?.user?.email !== env.GITHUB_ALLOWED_EMAIL) return { ok: false, error: "Experiências > editar: não autorizado" };
   const raw = {
     id: String(formData.get("id") ?? ""),
     company: String(formData.get("company") ?? ""),
     role: String(formData.get("role") ?? ""),
     period: String(formData.get("period") ?? ""),
     location: String(formData.get("location") ?? ""),
-    bullets: csv(formData.get("bullets")),
+    description: String(formData.get("description") ?? ""),
     techs: csv(formData.get("techs")),
     order: String(formData.get("order") ?? "0"),
   };
   try {
     await new ExperienceService().update(raw);
   } catch (e) {
-    if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === "P2025")
-      return { ok: false, error: "Registro não encontrado" };
-    return { ok: false, error: "Dados inválidos" };
+    return { ok: false, error: toActionError(e, "Experiências > editar") };
   }
-  revalidatePath("/admin/experience");
-  revalidatePath("/");
+  revalidateExperiences();
   return { ok: true };
 }
 
 export async function deleteExperience(formData: FormData): Promise<ActionResult> {
   const session = await auth();
-  if (session?.user?.email !== env.GITHUB_ALLOWED_EMAIL) return { ok: false, error: "Não autorizado" };
+  if (session?.user?.email !== env.GITHUB_ALLOWED_EMAIL) return { ok: false, error: "Experiências > excluir: não autorizado" };
   const id = String(formData.get("id") ?? "");
   try {
     await new ExperienceService().remove(id);
-  } catch {
-    return { ok: false, error: "Registro não encontrado" };
+  } catch (e) {
+    return { ok: false, error: toActionError(e, "Experiências > excluir") };
   }
-  revalidatePath("/admin/experience");
-  revalidatePath("/");
+  revalidateExperiences();
   return { ok: true };
 }

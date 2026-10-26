@@ -5,6 +5,7 @@ import { useFormState } from "react-dom";
 import { FormField, inputClass } from "@/components/admin/FormField";
 import { SubmitButton } from "@/components/admin/SubmitButton";
 import { TechPicker } from "@/components/admin/TechPicker";
+import { RichTextToolbar } from "@/components/admin/RichTextToolbar";
 import type { ActionResult } from "@/app/(admin)/admin/experience/actions";
 import type { Experience } from "@/generated/prisma/client";
 
@@ -21,15 +22,13 @@ export function ExperienceForm({
   action: (formData: FormData) => Promise<ActionResult>;
   onDone: () => void;
 }) {
-  const [state, formAction] = useFormState<ActionResult | null, FormData>(
-    async (_prev, fd) => {
-      const res = await action(fd);
-      if (res.ok) onDone();
-      return res;
-    },
-    null,
-  );
+  const [state, formAction] = useFormState<ActionResult | null, FormData>(async (_prev, fd) => {
+    const res = await action(fd);
+    if (res.ok) onDone();
+    return res;
+  }, null);
   const formRef = useRef<HTMLFormElement>(null);
+  const descriptionRef = useRef<HTMLTextAreaElement>(null);
   const [nativeOk, setNativeOk] = useState(mode === "edit");
   const [techs, setTechs] = useState<string[]>(initial?.techs ?? []);
   const canSubmit = nativeOk && techs.length > 0;
@@ -44,10 +43,24 @@ export function ExperienceForm({
       {mode === "edit" && initial ? <input type="hidden" name="id" value={initial.id} /> : null}
       <div className="grid items-start gap-4 sm:grid-cols-2">
         <FormField label="Empresa">
-          <input name="company" required minLength={3} defaultValue={initial?.company ?? ""} placeholder="Freelance — E-commerce" className={inputClass} />
+          <input
+            name="company"
+            required
+            minLength={3}
+            defaultValue={initial?.company ?? ""}
+            placeholder="Freelance — E-commerce"
+            className={inputClass}
+          />
         </FormField>
         <FormField label="Cargo">
-          <input name="role" required minLength={3} defaultValue={initial?.role ?? ""} placeholder="Fullstack" className={inputClass} />
+          <input
+            name="role"
+            required
+            minLength={3}
+            defaultValue={initial?.role ?? ""}
+            placeholder="Fullstack"
+            className={inputClass}
+          />
         </FormField>
       </div>
       <div className="grid items-start gap-4 sm:grid-cols-2">
@@ -64,19 +77,54 @@ export function ExperienceForm({
           />
         </FormField>
         <FormField label="Ordem">
-          <input name="order" type="number" min={0} step={1} defaultValue={initial?.order ?? 0} className={inputClass} />
+          <input
+            name="order"
+            type="number"
+            min={0}
+            step={1}
+            defaultValue={initial?.order ?? 0}
+            className={inputClass}
+          />
         </FormField>
       </div>
       <div className="grid items-start gap-4 sm:grid-cols-2">
         <FormField label="Período" hint='Ex: "2023 — Presente"'>
-          <input name="period" required minLength={3} defaultValue={initial?.period ?? ""} placeholder="2023 — Presente" className={inputClass} />
+          <input
+            name="period"
+            required
+            minLength={3}
+            defaultValue={initial?.period ?? ""}
+            placeholder="2023 — Presente"
+            className={inputClass}
+          />
         </FormField>
         <FormField label="Local">
-          <input name="location" required minLength={2} defaultValue={initial?.location ?? ""} placeholder="Remoto" className={inputClass} />
+          <input
+            name="location"
+            required
+            minLength={2}
+            defaultValue={initial?.location ?? ""}
+            placeholder="Remoto"
+            className={inputClass}
+          />
         </FormField>
       </div>
-      <FormField label="Bullets" hint="Um por vírgula — conquistas e responsabilidades">
-        <textarea name="bullets" required rows={3} defaultValue={initial?.bullets.join(", ") ?? ""} placeholder="Liderou migração..., Reduziu custo..." className={inputClass} />
+      <FormField
+        label="Descrição"
+        hint="Markdown: **negrito**, *itálico*, <u>sublinhado</u>, - tópicos, [link](url). Linhas em branco criam parágrafos."
+      >
+        <div className="flex flex-col gap-2">
+          <RichTextToolbar textareaRef={descriptionRef} />
+          <textarea
+            ref={descriptionRef}
+            name="description"
+            required
+            rows={10}
+            defaultValue={initial?.description ?? ""}
+            placeholder="Ex: Liderou migração da loja X. • **Conquistas** • Responsabilidades"
+            className={`${inputClass} min-h-[200px]`}
+          />
+        </div>
       </FormField>
       <FormField label="Techs" hint="Clique para adicionar, × para remover">
         <TechPicker name="techs" defaultValue={initial?.techs ?? []} suggestions={suggestions} onChange={setTechs} />
@@ -87,7 +135,9 @@ export function ExperienceForm({
         </p>
       ) : null}
       {!canSubmit ? (
-        <p className="font-mono text-xs text-portfolio-text-secondary">Preencha todos os campos e selecione ao menos 1 tech para liberar o envio.</p>
+        <p className="font-mono text-xs text-portfolio-text-secondary">
+          Preencha todos os campos e selecione ao menos 1 tech para liberar o envio.
+        </p>
       ) : null}
       <div className="flex justify-end">
         <SubmitButton

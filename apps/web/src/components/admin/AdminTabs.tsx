@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Icon } from "@iconify/react";
+import { Icon } from "@/components/ui/icon";
 const tabs = [
   { href: "/admin/projects", label: "Projetos", icon: "lucide:layout-grid" },
   { href: "/admin/experience", label: "Experiência", icon: "lucide:briefcase" },
