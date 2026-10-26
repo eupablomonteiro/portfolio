@@ -1,6 +1,6 @@
 # Planejamento Portfólio — Pablo Monteiro
 
-> Documento vivo. Atualize o checklist conforme avança. Toda implementação segue `@docs/system-prompt.md`: mostrar `ANTES / DEPOIS / EXPLICAÇÃO`, validar `estrutura, performance, segurança, tratamento de erros, reutilização, aderência ao framework`.
+> Documento vivo. Atualize o checklist conforme avança. Toda implementação segue `AGENTS.md`; para detalhes, consulte as seções relevantes de `docs/system-prompt.md`. Mostrar `ANTES / DEPOIS / EXPLICAÇÃO`, validar `estrutura, performance, segurança, tratamento de erros, reutilização, aderência ao framework`.
 
 ---
 
@@ -122,7 +122,7 @@ middleware.ts
 - [x] `lib/db.ts` Singleton + `PrismaPg` adapter (obrigatório no 7) + `lib/env.ts` (`DATABASE_URL` required, `SUPABASE_*` opcionais até configurar)
 - [x] POO `Project`: `dto/project.dto.ts` + `repositories/ProjectRepository.ts` + `services/ProjectService.ts`
 - [x] `lib/supabase.ts` Factory + `SUPABASE_BUCKET = "portfolio-bucket"` + `getSignedImageUrl`
-- [x] Supabase free criado (São Paulo): `SUPABASE_URL` = Project URL sem `/rest/v1`, `SUPABASE_ANON_KEY` = `Publishable key sb_publishable_...` (aba 1, legacy `anon eyJ...` depreciado fim/2026), bucket `portfolio-bucket` private com policies `public SELECT/INSERT`
+- [x] Supabase free criado (São Paulo): `SUPABASE_URL` = Project URL sem `/rest/v1`, `SUPABASE_PUBLISHABLE_KEY` = `Publishable key sb_publishable_...`, `SUPABASE_SERVICE_KEY` = `Secret key sb_secret_...` (server-only, upload + signed URLs), bucket `portfolio-bucket` private com policies `public SELECT/INSERT`
 - [x] `components/admin/ImageUpload.tsx` (preview local, Client só no upload)
 - [x] `admin/projects` ligado em `ProjectService.list()` em RSC (mock removido)
  - [x] POO `Experience`: `dto/experience.dto.ts` + `repositories/ExperienceRepository.ts` + `services/ExperienceService.ts` (espelhado em `Project`: `z.coerce` p/ `FormData`, `IRepository` tipado Prisma, `Service.create` em 2 passos)
