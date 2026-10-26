@@ -12,6 +12,11 @@ export const projectSchema = z.object({
   live: z.string().url("O link do projeto deve ser uma URL válida").optional().or(z.literal("")),
   order: z.coerce.number().int("A ordem deve ser um número inteiro").min(0).default(0),
   published: z.coerce.boolean().default(false),
+  coverDesktop: z.string().min(1).optional().or(z.literal("")),
+  coverMobile: z.string().min(1).optional().or(z.literal("")),
+  gallery: z.array(z.string().min(1)).default([]),
+  mobileGallery: z.array(z.string().min(1)).default([]),
+  displayMode: z.enum(["both", "web", "mobile"]).default("both"),
 });
 export type ProjectInput = z.infer<typeof projectSchema>;
 
