@@ -1,6 +1,6 @@
 import { Container } from "@/components/ui";
 import { Mail, ArrowUp } from "lucide-react";
-import { Icon } from "@iconify/react";
+import { Icon } from "@/components/ui/icon";
 import pabloLogo from "@/assets/pablo-logo.png";
 import Image from "next/image";
 

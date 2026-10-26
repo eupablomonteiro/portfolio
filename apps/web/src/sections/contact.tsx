@@ -5,13 +5,13 @@ import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { buttonVariants, Heading, Text } from "@/components/ui";
 import { GraphicScribble, GraphicStar, GraphicLine } from "@/components/graphics";
 import { Mail } from "lucide-react";
-import { Icon } from "@iconify/react";
-import PabloCracha from "@/assets/pablo-cracha.png";
+import { Icon } from "@/components/ui/icon";
+import PabloCracha from "@/assets/pablo-monteiro-cracha.png";
 import Image from "next/image";
 
 const links = [
   {
-    href: "mailto:contato@pablomonteiro.dev",
+    href: "mailto:pablo.monteirorgt19@gmail.com",
     icon: Mail,
     isIconify: false as const,
     label: "Enviar e-mail",
@@ -137,16 +137,16 @@ export function Contact() {
                 <div className="absolute -inset-8 rotate-[8deg] rounded-[22px] bg-portfolio-primary/12" aria-hidden="true" />
                 <div className="absolute -inset-8 -rotate-[10deg] rounded-[22px] bg-portfolio-gold/12" aria-hidden="true" />
 
-                <div className="relative overflow-visible">
+                <div className="relative overflow-visible rounded-3xl border-4 border-portfolio">
                   <Image
                     src={PabloCracha}
                     alt="Crachá Pablo Monteiro - Desenvolvedor Fullstack"
-                    width={1944}
-                    height={3607}
+                    width={2364}
+                    height={4016}
                     loading="lazy"
                     quality={100}
                     sizes="(min-width: 1024px) 380px, (min-width: 640px) 340px, 300px"
-                    className="relative z-10 h-auto w-[300px] sm:w-[340px] lg:w-[380px] object-contain select-none"
+                    className="relative z-10 h-auto w-[300px] sm:w-[340px] lg:w-[380px] object-contain select-none rounded-3xl"
                     style={{ transform: "translateZ(24px)" }}
                   />
                   <motion.div

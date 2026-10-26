@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui";
 import { Menu, X, LogIn } from "lucide-react";
-import { Icon } from "@iconify/react";
+import { Icon } from "@/components/ui/icon";
 import { motion, AnimatePresence } from "framer-motion";
 
 const links = [

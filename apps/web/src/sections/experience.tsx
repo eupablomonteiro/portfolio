@@ -5,19 +5,18 @@ import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import { BadgeComments } from "@/components/badgeComments";
 import { Text } from "@/components/ui";
 import { GraphicLine, GraphicStar } from "@/components/graphics";
+import { Markdown } from "@/components/ui/markdown";
 export interface ExperienceItem {
   company: string;
   role: string;
   period: string;
   location: string;
-  bullets: string[];
+  description: string;
   techs: string[];
   accent: "primary" | "green" | "gold";
 }
 
 const ACCENTS = ["primary", "green", "gold"] as const;
-
-
 
 export function Experience({ experiences }: { experiences: ExperienceItem[] }) {
   const sectionRef = useRef<HTMLElement>(null);
@@ -88,11 +87,7 @@ export function Experience({ experiences }: { experiences: ExperienceItem[] }) {
                       {exp.period} • {exp.location}
                     </span>
                   </div>
-                  <ul className="mt-4 list-disc space-y-2 pl-5 text-sm leading-relaxed text-portfolio-text-secondary">
-                    {exp.bullets.map((b) => (
-                      <li key={b}>{b}</li>
-                    ))}
-                  </ul>
+                  <Markdown text={exp.description} />
                   <div className="mt-5 flex flex-wrap gap-2">
                     {exp.techs.map((t) => (
                       <span key={t} className="rounded-full bg-portfolio-bg px-2.5 py-1 text-xs font-medium text-portfolio-text-secondary ring-1 ring-portfolio-border">

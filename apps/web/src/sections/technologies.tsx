@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Text } from "@/components/ui";
-import { Icon } from "@iconify/react";
+import { Icon } from "@/components/ui/icon";
 import { BadgeComments } from "@/components/badgeComments";
 import { GraphicLine, GraphicScribble } from "@/components/graphics";
 
@@ -74,13 +74,6 @@ const stacks: StackGroup[] = [
     accent: "primaryDark" as const,
   },
   {
-    title: "Testes",
-    label: "Confiança no deploy",
-    icons: ["simple-icons:jest", "simple-icons:vitest"],
-    items: ["Jest", "Vitest"],
-    accent: "warning" as const,
-  },
-  {
     title: "Infra & Gestão",
     label: "Fluxo e entrega",
     icons: [
@@ -90,6 +83,13 @@ const stacks: StackGroup[] = [
     ],
     items: ["Docker", "Cloudflare", "Kanban", "Trello"],
     accent: "surface" as const,
+  },
+  {
+    title: "Testes",
+    label: "Confiança no deploy",
+    icons: ["simple-icons:jest", "simple-icons:vitest"],
+    items: ["Jest", "Vitest"],
+    accent: "warning" as const,
   },
 ];
 
@@ -123,7 +123,7 @@ export function Technologies() {
       <GraphicScribble className="absolute top-16 right-[4%] h-9 w-9 text-portfolio-green" />
       <GraphicLine className="absolute bottom-24 left-[3%] w-24 text-portfolio-primary" />
 
-      <div className="mx-auto max-w-[1200px] px-6">
+      <div className="relative mx-auto max-w-[1200px] px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -213,8 +213,8 @@ export function Technologies() {
                     : idx === 4
                       ? "md:col-span-7"
                       : idx === 5
-                        ? "md:col-span-5"
-                        : "md:col-span-7";
+                        ? "md:col-span-7"
+                        : "md:col-span-5";
 
             return (
               <motion.div

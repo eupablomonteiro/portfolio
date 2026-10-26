@@ -4,15 +4,20 @@ import { ExperienceService } from "@/services/ExperienceService";
 const ACCENTS = ["primary", "green", "gold"] as const;
 
 export async function ExperienceFeed() {
-  const rows = await new ExperienceService().list();
-  const experiences: ExperienceItem[] = rows.map((e, idx) => ({
-    company: e.company,
-    role: e.role,
-    period: e.period,
-    location: e.location,
-    bullets: e.bullets,
-    techs: e.techs,
-    accent: ACCENTS[idx % ACCENTS.length] ?? "primary",
-  }));
+  let experiences: ExperienceItem[] = [];
+  try {
+    const rows = await new ExperienceService().list();
+    experiences = rows.map((e, idx) => ({
+      company: e.company,
+      role: e.role,
+      period: e.period,
+      location: e.location,
+      description: e.description,
+      techs: e.techs,
+      accent: ACCENTS[idx % ACCENTS.length] ?? "primary",
+    }));
+  } catch {
+    experiences = [];
+  }
   return <Experience experiences={experiences} />;
 }

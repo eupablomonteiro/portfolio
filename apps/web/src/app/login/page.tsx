@@ -1,6 +1,7 @@
 import { signIn, auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
-import { Icon } from "@iconify/react";
+import { Icon } from "@/components/ui/icon";
+import { IconSprite } from "@/components/ui/icon-sprite";
 import { SubmitButton } from "@/components/admin/SubmitButton";
 import { env } from "@/lib/env";
 
@@ -10,6 +11,7 @@ export default async function LoginPage() {
 
   return (
     <div className="min-h-screen bg-[#0F0F0F] flex items-center justify-center p-6 relative overflow-hidden">
+      <IconSprite />
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#E1577333_1px,transparent_1px),linear-gradient(to_bottom,#E1577312_1px,transparent_1px)] bg-[size:48px_48px]" />
       <div className="absolute top-20 right-[15%] h-64 w-64 rounded-full bg-portfolio-primary/20 blur-[80px]" />
       <div className="absolute bottom-20 left-[10%] h-72 w-72 rounded-full bg-portfolio-gold/15 blur-[80px]" />

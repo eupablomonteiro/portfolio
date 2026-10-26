@@ -3,10 +3,12 @@ import { ReactLenis } from 'lenis/react';
 import { useTransform, motion, useScroll, type MotionValue } from 'framer-motion';
 import { useRef } from 'react';
 import { cn } from '@/lib/utils';
-import { Icon } from '@iconify/react';
+import { Icon } from '@/components/ui/icon';
 import { ExternalLink } from 'lucide-react';
 import Image from 'next/image';
 import type { StaticImageData } from 'next/image';
+import { useCarousel } from '@/components/ui/use-carousel';
+import { BrowserFrame, CarouselDots, PhoneFrame, ShotPlaceholder } from '@/components/ui/mockup-frames';
 
 export interface StackingProject {
   title: string;
@@ -17,6 +19,67 @@ export interface StackingProject {
   screenshot?: StaticImageData;
   screenshotMobile?: StaticImageData;
   imageUrl?: string;
+  mobileImageUrl?: string;
+  gallery?: string[];
+  mobileGallery?: string[];
+  displayMode?: "both" | "web" | "mobile";
+}
+
+function DesktopMockup({ project, images }: { project: StackingProject; images: string[] }) {
+  const { index, setPaused } = useCarousel(images.length);
+  return (
+    <div className="min-w-0 flex-1">
+      <BrowserFrame
+        title={project.title}
+        onHoverChange={setPaused}
+        dots={<CarouselDots total={images.length} active={index} label={`${images.length} prints, mostrando ${index + 1}`} />}
+      >
+        {project.screenshot ? (
+          <Image src={project.screenshot} alt={project.title} fill className="object-cover" />
+        ) : images.length > 0 ? (
+          images.map((src, d) => (
+            <Image
+              key={`${src}_${d}`}
+              src={src}
+              alt={d === 0 ? project.title : `${project.title} — print ${d + 1}`}
+              fill
+              sizes="(min-width: 1024px) 550px, 90vw"
+              priority={false}
+              className={`object-cover transition-opacity duration-700 ${d === index ? "opacity-100" : "opacity-0"}`}
+            />
+          ))
+        ) : (
+          <ShotPlaceholder label="sem imagem" />
+        )}
+      </BrowserFrame>
+      <div className="mx-auto h-2.5 w-16 rounded-b-md bg-portfolio-text" />
+    </div>
+  );
+}
+
+function MobileMockup({ project, large = false, gallery = [] }: { project: StackingProject; large?: boolean; gallery?: string[] }) {
+  const shots = [project.mobileImageUrl, ...gallery].filter((s): s is string => !!s);
+  const { index } = useCarousel(shots.length, 4500);
+  return (
+    <PhoneFrame large={large}>
+      {project.screenshotMobile ? (
+        <Image src={project.screenshotMobile} alt={`${project.title} mobile`} fill className="object-cover" />
+      ) : shots.length > 0 ? (
+        shots.map((src, d) => (
+          <Image
+            key={`${src}_${d}`}
+            src={src}
+            alt={d === 0 ? `${project.title} mobile` : `${project.title} mobile — print ${d + 1}`}
+            fill
+            sizes="220px"
+            className={`object-cover transition-opacity duration-700 ${d === index ? "opacity-100" : "opacity-0"}`}
+          />
+        ))
+      ) : (
+        <ShotPlaceholder label="mobile" compact />
+      )}
+    </PhoneFrame>
+  );
 }
 
 interface CardProps {
@@ -36,6 +99,8 @@ export const StackingCard = ({ i, project, progress, range, targetScale }: CardP
   const imageScale = useTransform(scrollYProgress, [0, 1], [1.15, 1]);
   const scale = useTransform(progress, range, [1, targetScale]);
   const isEven = i % 2 === 0;
+  const mode = project.displayMode ?? "both";
+  const desktopImages = [project.imageUrl, ...(project.gallery ?? [])].filter((s): s is string => !!s);
 
   return (
     <div ref={container} className="h-[85vh] flex items-center justify-center sticky top-0">
@@ -47,42 +112,12 @@ export const StackingCard = ({ i, project, progress, range, targetScale }: CardP
       >
         <div className={`grid h-full grid-cols-1 lg:grid-cols-2 ${isEven ? '' : 'lg:[&>*:first-child]:order-2'}`}>
           <div className="flex items-end justify-center gap-4 bg-portfolio-bg p-6 lg:p-7 order-1">
-            <div className="min-w-0 flex-1">
-              <div className="rounded-12 border-[5px] border-portfolio-text bg-portfolio-bg overflow-hidden">
-                <div className="flex items-center gap-1.5 border-b-2 border-portfolio-text bg-portfolio-surface px-3 py-2">
-                  <span className="h-2.5 w-2.5 rounded-full bg-red-400" />
-                  <span className="h-2.5 w-2.5 rounded-full bg-yellow-400" />
-                  <span className="h-2.5 w-2.5 rounded-full bg-green-400" />
-                </div>
-                <div className="aspect-[16/10] overflow-hidden relative">
-                  <motion.div style={{ scale: imageScale }} className="w-full h-full">
-                    {project.screenshot ? (
-                      <Image src={project.screenshot} alt={project.title} fill className="object-cover" />
-                    ) : project.imageUrl ? (
-                      <img src={project.imageUrl} alt={project.title} loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover" />
-                    ) : (
-                      <div className="absolute inset-0 grid place-items-center bg-portfolio-bg">
-                        <span className="font-mono text-xs text-portfolio-text-secondary">sem imagem</span>
-                      </div>
-                    )}
-                  </motion.div>
-                </div>
-              </div>
-              <div className="mx-auto h-2.5 w-16 rounded-b-md bg-portfolio-text" />
-            </div>
-            <div className="w-[30%] max-w-[110px] shrink-0 hidden sm:block">
-              <div className="rounded-16 border-4 border-portfolio-text bg-portfolio-bg p-1">
-                <div className="aspect-[9/19] overflow-hidden rounded-12 bg-portfolio-bg relative">
-                  {project.screenshotMobile ? (
-                    <Image src={project.screenshotMobile} alt={`${project.title} mobile`} fill className="object-cover" />
-                  ) : (
-                    <div className="absolute inset-0 grid place-items-center bg-portfolio-bg">
-                      <span className="font-mono text-[10px] text-portfolio-text-secondary">mobile</span>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
+            {mode !== "mobile" ? (
+              <motion.div style={{ scale: imageScale }} className="flex min-w-0 flex-1 items-end">
+                <DesktopMockup project={project} images={desktopImages} />
+              </motion.div>
+            ) : null}
+            {mode !== "web" ? <MobileMockup project={project} large={mode === "mobile"} gallery={project.mobileGallery} /> : null}
           </div>
 
           <div className="flex flex-col justify-center p-6 lg:p-8 bg-portfolio-surface order-2">

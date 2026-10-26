@@ -6,7 +6,7 @@ import { buttonVariants } from "@/components/ui";
 import { Character } from "@/components/character";
 import { GraphicLine, GraphicScribble, GraphicStar } from "@/components/graphics";
 import { Mail, ArrowDown } from "lucide-react";
-import { Icon } from "@iconify/react";
+import { Icon } from "@/components/ui/icon";
 
 const containerVariants = {
   hidden: { opacity: 0 },
