@@ -17,6 +17,9 @@ model Project {
   live         String?
   coverDesktop String?
   coverMobile  String?
+  gallery      String[] @default([])
+  mobileGallery String[] @default([])
+  displayMode  String   @default("both")
   order        Int      @default(0)
   published    Boolean  @default(false)
   createdAt    DateTime @default(now())
@@ -30,7 +33,7 @@ model Experience {
   role      String
   period    String
   location  String
-  bullets   String[]
+  description String
   techs     String[]
   order     Int      @default(0)
   createdAt DateTime @default(now())
